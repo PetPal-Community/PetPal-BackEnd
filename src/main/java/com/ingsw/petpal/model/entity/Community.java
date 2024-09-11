@@ -15,6 +15,10 @@ public class Community {
     private String nombre;
     private String descripcion;
 
+    @ManyToOne
+    @JoinColumn(name = "creador_id")
+    private User creador;
+
 
     @ManyToMany(mappedBy = "comunidades")
     private List<User> usuarios;

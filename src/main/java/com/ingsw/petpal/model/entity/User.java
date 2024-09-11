@@ -18,6 +18,10 @@ public class User {
     private String telefono;
     private String contrasenia;
 
+    @OneToMany(mappedBy = "creador")
+    private List<Community> comunidadesCreadas;
+
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "UserComunidad",
