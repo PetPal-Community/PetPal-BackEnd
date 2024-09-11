@@ -16,7 +16,7 @@ public class Review {
     private float calificacion;
     private String comentario;
     private LocalDateTime fecha;
-
+    //EDitar para que solo haya una reseña de un usuario por el perfil de un cuidador
     @OneToOne
     @JoinColumn(name="usuario_id", referencedColumnName = "id", foreignKey = @ForeignKey(name="fk_user_review"))
     private User usuario;
