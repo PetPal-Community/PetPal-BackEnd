@@ -1,11 +1,9 @@
 package com.ingsw.petpal.controller;
 
 import com.ingsw.petpal.model.entity.User;
-import com.ingsw.petpal.repository.UserRepository;
 import com.ingsw.petpal.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

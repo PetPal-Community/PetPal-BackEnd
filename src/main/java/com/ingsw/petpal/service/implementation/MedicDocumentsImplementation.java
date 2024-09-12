@@ -31,7 +31,7 @@ public class MedicDocumentsImplementation implements MedicDocumentsService {
     @Transactional(readOnly = true)
     @Override
     public MedicDocuments findById(int id) {
-        return medicDocumentsRepository.findById(id).orElseThrow(()->new RuntimeException("Medic Documents not found" + id));
+        return medicDocumentsRepository.findById(id).orElseThrow(()->new RuntimeException("not found" + id));
     }
 
 
