@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data // Limpia los constructores
 @Entity
-@Table(name = "mascotas")
+@Table(name = "Recordatorios")
 public class Reminder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
