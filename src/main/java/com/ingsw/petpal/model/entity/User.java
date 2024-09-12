@@ -3,12 +3,13 @@ package com.ingsw.petpal.model.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Entity
 @Table (name = "usuarios")
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -29,4 +30,13 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "comunidad_id")
     )
     private List<Community> comunidades;
+
+    /*
+    // Lista de seguidores (usuarios que siguen a este usuario)
+    @OneToMany(mappedBy = "usuario")
+    private List<Followers> listaSeguidores;
+
+    // Lista de seguidos (usuarios que este usuario sigue)
+    @OneToMany(mappedBy = "seguidor")
+    private List<Followers> listaQuienSigo;*/
 }
