@@ -1,6 +1,7 @@
 package com.ingsw.petpal.model.entity;
 
 import jakarta.persistence.*;
+
 import lombok.Data;
 
 @Data
@@ -10,7 +11,9 @@ public class MedicDocuments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String tipoDocumento;
+
     private String descripcion;
 
     @ManyToOne

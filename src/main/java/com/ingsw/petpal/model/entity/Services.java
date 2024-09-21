@@ -1,6 +1,7 @@
 package com.ingsw.petpal.model.entity;
 
 import jakarta.persistence.*;
+
 import lombok.Data;
 import org.springframework.format.number.money.MonetaryAmountFormatter;
 
@@ -13,8 +14,11 @@ public class Services {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String tipo_servicio;
+
     private String descripcion;
+
     private BigDecimal precio;
 
     @ManyToOne

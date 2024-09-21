@@ -1,6 +1,7 @@
 package com.ingsw.petpal.model.entity;
 
 import jakarta.persistence.*;
+
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -14,8 +15,12 @@ public class Mensajes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+
     private String contenido;
+
+
     private LocalDateTime fechaEnvio;
+
     private LocalDateTime fechaUpdate;
 
     @ManyToOne

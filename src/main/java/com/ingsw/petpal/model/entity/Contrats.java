@@ -1,6 +1,7 @@
 package com.ingsw.petpal.model.entity;
 
 import jakarta.persistence.*;
+
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -12,8 +13,11 @@ public class Contrats {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private LocalDate fechaContratacion;
+
     private String estado;
+
     private String detalles;
 
     @ManyToOne
@@ -23,7 +27,6 @@ public class Contrats {
     @ManyToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_contrato_usuario"))
     private User usuario;
-
 
     @ManyToOne
     @JoinColumn(name = "cuidador_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_contrato_cuidador"))

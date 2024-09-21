@@ -1,6 +1,7 @@
 package com.ingsw.petpal.model.entity;
 
 import jakarta.persistence.*;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,8 +14,11 @@ public class coments implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String contenido;
+
     private LocalDateTime fechacreacion;
+
     private LocalDateTime fechaupdate;
 
     @ManyToOne
@@ -22,6 +26,6 @@ public class coments implements Serializable {
     private User usuario;
 
     @ManyToOne
-    @JoinColumn(name = "comunidad_id",referencedColumnName = "id",foreignKey = @ForeignKey(name = "fk_usuario_publicacion") )
-    private Community comunidad;
+    @JoinColumn(name = "publicacion_id",referencedColumnName = "id",foreignKey = @ForeignKey(name = "fk_usuario_publicacion") )
+    private Publicaciones publicacion;
 }

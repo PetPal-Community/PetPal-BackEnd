@@ -1,6 +1,7 @@
 package com.ingsw.petpal.model.entity;
 
 import jakarta.persistence.*;
+
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -13,11 +14,16 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private float calificacion;
+
+
     private String comentario;
-    private LocalDateTime fecha;
+
+    private LocalDateTime fechaCreacion;
+
     //EDitar para que solo haya una reseña de un usuario por el perfil de un cuidador
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="usuario_id", referencedColumnName = "id", foreignKey = @ForeignKey(name="fk_user_review"))
     private User usuario;
 

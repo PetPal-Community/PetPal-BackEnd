@@ -5,26 +5,23 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Data // EN PRUEBAS
 @Entity
 @Table(name = "Seguidores")
-public class Followers implements Serializable {
+@IdClass(FollowersPK.class)
+public class Followers {
 
-    @EmbeddedId
-    private FollowersPK id;
+    @Id
+    private Integer usuarioseguidor;
 
-    @ManyToOne
-    @MapsId("usuarioId")
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_usuario_siguiendo"))
-    private User usuario; // Usuario que sigue
+    @Id
+    private Integer usuarioseguido;
 
-    @ManyToOne
-    @MapsId("seguidorId")
-    @JoinColumn(name = "seguidor_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_user_seguidor"))
-    private User seguidor; // Usuario que es seguido
+    @Column(name = "fechaEmpezoSeguir", nullable = false)
+    private LocalDateTime fechaCuandoEmpezo;
 
-    private LocalDate fechaCuandoEmpezo;
 
 }
