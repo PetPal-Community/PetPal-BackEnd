@@ -39,7 +39,7 @@ public class Publicaciones implements Serializable {
 
     // COMENTARIOS EXISTENTES
     @OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL)
-    private List<coments> comentarios;
+    private List<Comments> comentarios;
     //
 
 

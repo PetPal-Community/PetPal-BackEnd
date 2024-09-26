@@ -51,7 +51,7 @@ public class User  {
 
     // COMENTARIOS REALIZADOS
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private List<coments> comentariosRealizados;
+    private List<Comments> comentariosRealizados;
     //
 
     //MASCOTAS
