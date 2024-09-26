@@ -1,5 +1,6 @@
 package com.ingsw.petpal.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.Data;
@@ -24,11 +25,13 @@ public class MedicVisit {
     private Pet mascota;
 
     // tratamientos
+    @JsonIgnore
     @OneToMany(mappedBy="visitaMedica", cascade = CascadeType.ALL)
     private List<Treatment> tratamientos;
     //
 
     // DOCUMENTOS MEDICOS
+    @JsonIgnore
     @OneToMany(mappedBy = "visitamedica", cascade = CascadeType.ALL)
     private List<MedicDocuments> documentosMedicos;
 }

@@ -1,5 +1,6 @@
 package com.ingsw.petpal.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.Data;
@@ -23,6 +24,7 @@ public class Community {
     @JoinColumn(name = "creador_id")
     private User creador;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "comunidad", cascade = CascadeType.ALL)
     private List<ComunidadUser> usuarios;
     //

@@ -1,5 +1,6 @@
 package com.ingsw.petpal.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.Data;
@@ -33,11 +34,13 @@ public class Publicaciones implements Serializable {
     //
 
     // LIKES
+    @JsonIgnore
     @OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL)
     private List<likesPublicacion> likes;
     //
 
     // COMENTARIOS EXISTENTES
+    @JsonIgnore
     @OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL)
     private List<coments> comentarios;
     //

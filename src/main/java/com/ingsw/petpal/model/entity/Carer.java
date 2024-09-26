@@ -1,6 +1,7 @@
 package com.ingsw.petpal.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -27,18 +28,22 @@ public class Carer {
     private String contrasenia;
 
     // RESEÑAS
+    @JsonIgnore
     @OneToMany( mappedBy="cuidador", cascade=CascadeType.ALL)
     private List<Review> resenias;
 
     //MENSAJES
+    @JsonIgnore
     @OneToMany(mappedBy = "cuidador", cascade=CascadeType.ALL)
     private List<Mensajes> mensajesCuidador;
 
     //CONTRATOS
+    @JsonIgnore
     @OneToMany(mappedBy = "cuidador", cascade = CascadeType.ALL)
     private List<Contrats> contratosCuidadores;
 
     // SERVICIOS
+    @JsonIgnore
     @OneToMany(mappedBy = "cuidador", cascade = CascadeType.ALL)
     private List<Services> servicios;
 }

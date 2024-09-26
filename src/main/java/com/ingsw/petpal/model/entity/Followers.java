@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Data // EN PRUEBAS
 @Entity
-@Table(name = "Seguidores")
+@Table(name = "seguidores")
 @IdClass(FollowersPK.class)
 public class Followers {
 
@@ -22,6 +22,5 @@ public class Followers {
 
     @Column(name = "fechaEmpezoSeguir", nullable = false)
     private LocalDateTime fechaCuandoEmpezo;
-
 
 }
