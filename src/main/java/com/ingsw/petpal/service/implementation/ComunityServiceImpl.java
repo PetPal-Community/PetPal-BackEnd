@@ -1,6 +1,9 @@
 package com.ingsw.petpal.service.implementation;
 
+import com.ingsw.petpal.dto.CommunityDTO;
+import com.ingsw.petpal.exception.DuplicateCommunityException;
 import com.ingsw.petpal.exception.ResourceNotFoundException;
+import com.ingsw.petpal.mapper.ComunidadMapper;
 import com.ingsw.petpal.model.entity.Community;
 import com.ingsw.petpal.repository.ComunityRepository;
 import com.ingsw.petpal.service.ComunityService;
@@ -10,51 +13,64 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class ComunityServiceImpl implements ComunityService {
 
-    private final ComunityRepository comunityyRepository;
+    private final ComunityRepository comunidadRepository;
+    private final ComunidadMapper comunidadMapper;
+
     @Transactional(readOnly = true)
     @Override
-    public List<Community> findAll() {
-        return comunityyRepository.findAll();
-    }
-
-    @Transactional()
-    @Override
-    public Community create(Community community) {
-        return comunityyRepository.save(community);
+    public List<CommunityDTO> getAll() {
+        List<Community> comunidades = comunidadRepository.findAll();
+        return comunidades.stream().map(comunidadMapper::toDTO).toList();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Community findById(int id) {
-        return comunityyRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Comunity not found"));
+    public CommunityDTO findById(Integer id) {
+        Community comunidad = comunidadRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Comunidad no encontrada"));
+        return comunidadMapper.toDTO(comunidad);
     }
-
-    @Override
-    public Community update(Community community) {
-        return null;
-    }
-
 
     @Transactional
     @Override
-    public Community update(Integer id, Community updateCommunity) {
+    public CommunityDTO create(CommunityDTO comunidadDTO) {
+        // Verificar si ya existe una comunidad con el mismo nombre
+        comunidadRepository.findByNombre(comunidadDTO.getNombre())
+                .ifPresent(comunidad -> {
+                    throw new DuplicateCommunityException("Ya existe una comunidad con el mismo nombre");
+                });
 
-        Community comunityFromDb = findById(id);
-        comunityFromDb.setNombre(updateCommunity.getNombre());
-        comunityFromDb.setDescripcion(updateCommunity.getDescripcion());
-        return comunityyRepository.save(comunityFromDb);
+        // Mapear DTO a entidad
+        Community comunidad = comunidadMapper.toEntity(comunidadDTO);
+
+        // Intentar guardar la nueva comunidad
+        comunidad = comunidadRepository.save(comunidad);
+
+        return comunidadMapper.toDTO(comunidad);
+    }
+
+    @Transactional
+    @Override
+    public CommunityDTO update(Integer id, CommunityDTO updatedComunidadDTO) {
+        Community comunidadFromDb = comunidadRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Comunidad no encontrada"));
+
+        comunidadFromDb.setNombre(updatedComunidadDTO.getNombre());
+        comunidadFromDb.setDescripcion(updatedComunidadDTO.getDescripcion());
+
+        comunidadFromDb = comunidadRepository.save(comunidadFromDb);
+        return comunidadMapper.toDTO(comunidadFromDb);
     }
 
     @Transactional
     @Override
     public void delete(Integer id) {
-        Community comunityFromDb = findById(id);
-        comunityyRepository.delete(comunityFromDb);
+        Community comunidadFromDb = comunidadRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Comunidad no encontrada"));
+        comunidadRepository.delete(comunidadFromDb);
     }
-
-
 }

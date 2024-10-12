@@ -1,6 +1,8 @@
 package com.ingsw.petpal.service.implementation;
 
+import com.ingsw.petpal.dto.PetDTO;
 import com.ingsw.petpal.exception.ResourceNotFoundException;
+import com.ingsw.petpal.mapper.PetMapper;
 import com.ingsw.petpal.model.entity.Pet;
 import com.ingsw.petpal.model.entity.User;
 import com.ingsw.petpal.repository.PetRepository;
@@ -13,57 +15,61 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+// Conectar con user o usar 2 DTO para añadirlo con su FK
+
 @Service
+@RequiredArgsConstructor
 public class PetServiceImpl implements PetService {
 
     private final PetRepository petRepository;
-    private final UserRepository userRepository;
+    private final PetMapper petMapper;
 
     @Transactional(readOnly = true)
     @Override
-    public List<Pet> findAll() {
-        return petRepository.findAll();
-    }
-
-    @Transactional
-    @Override
-    public Pet create(Pet pet) {
-        User usuario = userRepository.findById(pet.getUsuario().getId()).orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + pet.getUsuario().getId()));
-        pet.setUsuario(usuario);
-        return petRepository.save(pet);
+    public List<PetDTO> getAllPets() {
+        List<Pet> pets = petRepository.findAll();
+        return pets.stream()
+                .map(petMapper::toDTO)
+                .toList();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Pet findById(Integer id) {
-        return petRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("user not found" + id));
-    }
-
-    @Override
-    public Pet update(Pet pet) {
-        return null;
+    public PetDTO findPetById(Integer id) {
+        Pet pet = petRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada"));
+        return petMapper.toDTO(pet);
     }
 
     @Transactional
     @Override
-    public Pet update(Integer id, Pet updatePet) {
-        User usuario = userRepository.findById(updatePet.getUsuario().getId()).orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + updatePet.getUsuario().getId()));
-        Pet petFromDb = findById(id);
-        petFromDb.setUsuario(usuario);
-        petFromDb.setRaza(updatePet.getRaza());
-        petFromDb.setNombre(updatePet.getNombre());
-        petFromDb.setEdad(updatePet.getEdad());
-        petFromDb.setGenero(updatePet.getGenero());
-        petFromDb.setEspecie(updatePet.getEspecie());
-
-        return petRepository.save(petFromDb);
+    public PetDTO createPet(PetDTO petDTO) {
+        Pet pet = petMapper.toEntity(petDTO);
+        pet = petRepository.save(pet);
+        return petMapper.toDTO(pet);
     }
 
     @Transactional
     @Override
-    public void delete(Integer id) {
-        Pet petFromDb = findById(id);
+    public PetDTO updatePet(Integer id, PetDTO updatedPetDTO) {
+        Pet petFromDb = petRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada"));
+
+        // Actualiza las propiedades de la mascota según lo que venga en el DTO
+        petFromDb.setRaza(updatedPetDTO.getRaza());
+        petFromDb.setEdad(updatedPetDTO.getEdad());
+        petFromDb.setGenero(updatedPetDTO.getGenero());
+        petFromDb.setEspecie(updatedPetDTO.getEspecie());
+
+        petFromDb = petRepository.save(petFromDb);
+        return petMapper.toDTO(petFromDb);
+    }
+
+    @Transactional
+    @Override
+    public void deletePet(Integer id) {
+        Pet petFromDb = petRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada"));
         petRepository.delete(petFromDb);
     }
 }

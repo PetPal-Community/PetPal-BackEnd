@@ -1,10 +1,17 @@
 package com.ingsw.petpal.dto;
 
+import jakarta.validation.constraints.*;
+import lombok.Data;
+
+@Data
 public class UsuarioDTO {
-    /*
-    @NotBlank(message = "El nombre es obligatorio")
-    @Size(min = 3, max = 20, message = "nombre debe ser de 3 a 20 caracteres")
+
+    private Integer id;
+
+    @NotBlank(message="El nombre es obligatorio")
+    @Size(max=50, message="El nombre debe tener 50 caracteres o menos")
     private String nombre;
+
 
     @NotBlank(message = "El apellido es obligatorio")
     @Size(min = 3, max = 20, message = "apellido debe ser de 3 a 20 caracteres")
@@ -17,9 +24,5 @@ public class UsuarioDTO {
     @NotBlank
     @Pattern(regexp = "\\d+", message = "El teléfono debe contener solo números.")
     private String telefono;
-
-    @NotBlank
-    @Size(min = 8, max = 20)
-    private String contrasenia;*/
 
 }

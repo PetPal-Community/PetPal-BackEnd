@@ -1,42 +1,50 @@
 package com.ingsw.petpal.controller;
 
+import com.ingsw.petpal.dto.CommunityDTO;
 import com.ingsw.petpal.model.entity.Community;
 import com.ingsw.petpal.service.ComunityService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @RestController
-@RequestMapping("/comunity")
-
+@RequiredArgsConstructor
+@RequestMapping("/comunidades")
 public class ComunityController {
-    private final ComunityService comunityService;
 
+    private final ComunityService comunidadService;
 
     @GetMapping
-    public List<Community> list(){ return comunityService.findAll(); }
-
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public Community create(@RequestBody Community community) {return comunityService.create(community);}
+    public ResponseEntity<List<CommunityDTO>> getAllComunidades() {
+        List<CommunityDTO> comunidades = comunidadService.getAll();
+        return new ResponseEntity<>(comunidades, HttpStatus.OK);
+    }
 
     @GetMapping("/{id}")
-    public Community get(@PathVariable Integer id){
-        return comunityService.findById(id);
+    public ResponseEntity<CommunityDTO> getComunidadById(@PathVariable("id") Integer id) {
+        CommunityDTO comunidad = comunidadService.findById(id);
+        return new ResponseEntity<>(comunidad, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<CommunityDTO> createComunidad(@Valid @RequestBody CommunityDTO comunidadDTO) {
+        CommunityDTO createdComunidad = comunidadService.create(comunidadDTO);
+        return new ResponseEntity<>(createdComunidad, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public Community update(@PathVariable Integer id, @RequestBody Community comunity){
-
-        return comunityService.update(id, comunity);
+    public ResponseEntity<CommunityDTO> updateComunidad(@PathVariable("id") Integer id, @Valid @RequestBody CommunityDTO comunidadDTO) {
+        CommunityDTO updatedComunidad = comunidadService.update(id, comunidadDTO);
+        return new ResponseEntity<>(updatedComunidad, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id){ comunityService.delete(id); }
-
-
-
+    public ResponseEntity<Void> deleteComunidad(@PathVariable("id") Integer id) {
+        comunidadService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

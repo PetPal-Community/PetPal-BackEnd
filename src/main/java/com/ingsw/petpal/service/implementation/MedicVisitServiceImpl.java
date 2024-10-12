@@ -1,6 +1,8 @@
 package com.ingsw.petpal.service.implementation;
 
+import com.ingsw.petpal.dto.MedicVisitDTO;
 import com.ingsw.petpal.exception.ResourceNotFoundException;
+import com.ingsw.petpal.mapper.MedicVisitMapper;
 import com.ingsw.petpal.model.entity.MedicVisit;
 import com.ingsw.petpal.model.entity.Pet;
 import com.ingsw.petpal.model.entity.User;
@@ -11,62 +13,62 @@ import com.ingsw.petpal.service.MedicVisitService;
 import com.ingsw.petpal.service.PetService;
 import com.ingsw.petpal.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
-@RequiredArgsConstructor
+
 @Service
+@RequiredArgsConstructor
 public class MedicVisitServiceImpl implements MedicVisitService {
 
     private final MedicVisitRepository medicVisitRepository;
-    private final PetRepository petRepository;
+    private final MedicVisitMapper medicVisitMapper;
 
     @Transactional(readOnly = true)
     @Override
-    public List<MedicVisit> findAll() {
-        return medicVisitRepository.findAll();
-    }
-
-    @Transactional
-    @Override
-    public MedicVisit create(MedicVisit medicVisit) {
-        Pet pet = petRepository.findById(medicVisit.getMascota().getId()).orElseThrow(() -> new ResourceNotFoundException("Mascota not found with id: " + medicVisit.getMascota().getId()));
-        medicVisit.setMascota(pet);
-        return medicVisitRepository.save(medicVisit);
+    public List<MedicVisitDTO> getAll() {
+        List<MedicVisit> visits = medicVisitRepository.findAll();
+        return visits.stream()
+                .map(medicVisitMapper::toDTO)
+                .toList();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public MedicVisit findById(Integer id) {
-        return medicVisitRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("medicVisit not found" + id));
-    }
-
-    @Override
-    public MedicVisit update(MedicVisit medicVisit) {
-        return null;
+    public MedicVisitDTO findById(Integer id) {
+        MedicVisit visit = medicVisitRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Visita médica no encontrada"));
+        return medicVisitMapper.toDTO(visit);
     }
 
     @Transactional
     @Override
-    public MedicVisit update(Integer id, MedicVisit updateMedicVisit) {
-        MedicVisit medicVisitFromDb = findById(id);
-        Pet pet = petRepository.findById(updateMedicVisit.getMascota().getId()).orElseThrow(() -> new ResourceNotFoundException("Mascota not found with id: " + updateMedicVisit.getMascota().getId()));
-        medicVisitFromDb.setDiagnostico(updateMedicVisit.getDiagnostico());
-        medicVisitFromDb.setFechaVisita(updateMedicVisit.getFechaVisita());
-        medicVisitFromDb.setMascota(pet);
-        return medicVisitRepository.save(medicVisitFromDb);
+    public MedicVisitDTO create(MedicVisitDTO medicVisitDTO) {
+        MedicVisit visit = medicVisitMapper.toEntity(medicVisitDTO);
+        visit = medicVisitRepository.save(visit);
+        return medicVisitMapper.toDTO(visit);
+    }
+
+    @Transactional
+    @Override
+    public MedicVisitDTO update(Integer id, MedicVisitDTO medicVisitDTO) {
+        MedicVisit visitFromDb = medicVisitRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Visita médica no encontrada"));
+
+        // Actualiza los campos que necesites aquí
+
+        visitFromDb = medicVisitRepository.save(visitFromDb);
+        return medicVisitMapper.toDTO(visitFromDb);
     }
 
     @Transactional
     @Override
     public void delete(Integer id) {
-        MedicVisit medicVisitFromDb = findById(id);
-        medicVisitRepository.delete(medicVisitFromDb);
+        MedicVisit visitFromDb = medicVisitRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Visita médica no encontrada"));
+        medicVisitRepository.delete(visitFromDb);
     }
 }

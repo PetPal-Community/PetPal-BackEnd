@@ -1,5 +1,6 @@
 package com.ingsw.petpal.service;
 
+import com.ingsw.petpal.dto.MedicVisitDTO;
 import com.ingsw.petpal.model.entity.MedicVisit;
 import com.ingsw.petpal.model.entity.User;
 import org.springframework.data.domain.Page;
@@ -10,14 +11,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MedicVisitService {
+    List<MedicVisitDTO> getAll();
 
-    List<MedicVisit> findAll();
-    MedicVisit create(MedicVisit medicVisit);
-    MedicVisit findById(Integer id);
-    MedicVisit update(MedicVisit medicVisit);
+    MedicVisitDTO findById(Integer id);
 
-    @Transactional
-    MedicVisit update(Integer id, MedicVisit updateMedicVisit);
+    MedicVisitDTO create(MedicVisitDTO medicVisitDTO);
+
+    MedicVisitDTO update(Integer id, MedicVisitDTO medicVisitDTO);
 
     void delete(Integer id);
 }

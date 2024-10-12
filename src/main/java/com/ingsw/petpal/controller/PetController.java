@@ -1,43 +1,50 @@
 package com.ingsw.petpal.controller;
 
+import com.ingsw.petpal.dto.PetDTO;
 import com.ingsw.petpal.model.entity.Pet;
 import com.ingsw.petpal.service.PetService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/pets")
 public class PetController {
 
-    private final PetService adminPetService;
+    private final PetService petService;
 
     @GetMapping
-    public List<Pet> list() {
-        return adminPetService.findAll();
-    }
-
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public Pet create(@RequestBody Pet pet) {
-        return adminPetService.create(pet);
+    public ResponseEntity<List<PetDTO>> getAllPets() {
+        List<PetDTO> pets = petService.getAllPets();
+        return new ResponseEntity<>(pets, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Pet get(@PathVariable Integer id){
-        return adminPetService.findById(id);
+    public ResponseEntity<PetDTO> getPetById(@PathVariable("id") Integer id) {
+        PetDTO pet = petService.findPetById(id);
+        return new ResponseEntity<>(pet, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<PetDTO> createPet(@Valid @RequestBody PetDTO petDTO) {
+        PetDTO createdPet = petService.createPet(petDTO);
+        return new ResponseEntity<>(createdPet, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public Pet update(@PathVariable Integer id, @RequestBody Pet pet){
-        return adminPetService.update(id, pet);
+    public ResponseEntity<PetDTO> updatePet(@PathVariable("id") Integer id, @Valid @RequestBody PetDTO petDTO) {
+        PetDTO updatedPet = petService.updatePet(id, petDTO);
+        return new ResponseEntity<>(updatedPet, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id){
-        adminPetService.delete(id);
+    public ResponseEntity<Void> deletePet(@PathVariable("id") Integer id) {
+        petService.deletePet(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

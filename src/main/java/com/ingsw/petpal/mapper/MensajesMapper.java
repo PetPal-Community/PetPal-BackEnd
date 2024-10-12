@@ -19,7 +19,7 @@ public class MensajesMapper {
     public MensajeDetailsDTO toDetailsDTO(Mensajes mensajes){
         MensajeDetailsDTO mensajeDetailsDTO = modelMapper.map(mensajes, MensajeDetailsDTO.class);
         mensajeDetailsDTO.setUsuarioNombre(mensajes.getUsuario().getNombre()+' '+mensajes.getUsuario().getApellido());
-        mensajeDetailsDTO.setCuidadorNombre(mensajes.getUsuario().getNombre()+' '+mensajes.getUsuario().getApellido());
+        mensajeDetailsDTO.setCuidadorNombre(mensajes.getCuidador().getNombre()+' '+mensajes.getCuidador().getApellido());
         return mensajeDetailsDTO;
     }
 

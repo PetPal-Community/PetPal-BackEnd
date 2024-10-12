@@ -1,24 +1,26 @@
 package com.ingsw.petpal.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
+import lombok.Data;
+
+@Data
 public class PetDTO {
-    /*
-    @NotBlank(message = "Raza es obligatorio")
-    @Size(min=5,max=20)
+
+    private Integer id;
+
+    @NotBlank(message = "La raza es obligatoria")
+    @Size(max = 50, message = "La raza debe tener 50 caracteres o menos")
     private String raza;
 
-    @NotBlank(message = "Nomre es olbigatoiro")
-    @Size(min=3,max=20)
-    private String nombre;
+    @NotNull(message = "La edad es obligatoria")
+    private Integer edad;
 
-    @NotBlank(message = "LA edad de la mascota es oligatorio")
-    private int edad;
-
-    @NotBlank(message = "El genero es importante")
+    @NotBlank(message = "El género es obligatorio")
+    @Size(max = 10, message = "El género debe tener 10 caracteres o menos")
     private String genero;
 
-    @NotBlank(message = "LA especie es obligatoria")
-    private String especie;*/
+    @NotBlank(message = "La especie es obligatoria")
+    @Size(max = 20, message = "La especie debe tener 20 caracteres o menos")
+    private String especie;
 }
