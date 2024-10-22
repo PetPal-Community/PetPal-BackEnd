@@ -4,6 +4,7 @@ import com.ingsw.petpal.model.entity.Carer;
 import com.ingsw.petpal.service.CarerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/carer")
-
+@PreAuthorize("hasRole('ADMIN')")  // editar para que el carer pueda tener control para su perfil
 public class CarerController {
     private final CarerService carerService;
 

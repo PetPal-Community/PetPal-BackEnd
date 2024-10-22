@@ -1,4 +1,8 @@
 package com.ingsw.petpal.model.entity.enums;
 
-public class ERoles {
+public enum ERoles {
+    ADMIN,
+    CUSTOMER,
+    CARER
 }
+

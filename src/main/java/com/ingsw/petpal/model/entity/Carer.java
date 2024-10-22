@@ -20,12 +20,11 @@ public class Carer {
 
     private String apellido;
 
-    private String email;
-
     private String telefono;
-
-
-    private String contrasenia;
+    // Asignacion de UserGeneral:
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private UserGeneral user;
 
     // RESEÑAS
     @JsonIgnore
