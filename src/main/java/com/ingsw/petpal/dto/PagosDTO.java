@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -22,4 +23,14 @@ public class PagosDTO {
     @NotNull(message = "La fecha del pago es obligatoria")
     @PastOrPresent(message = "La fecha del pago no puede estar en el futuro")
     private LocalDateTime fechaPago;
+
+    private String estado;
+
+    @NotNull(message = "El monto del pago es obligatorio")
+    @DecimalMin(value = "0.0", inclusive = false, message = "El monto debe ser mayor que cero")
+    private BigDecimal valorPago;
+
+    //
+    @NotNull(message = "El ID del contrato es obligatorio")
+    private Integer contratacionIdd;
 }

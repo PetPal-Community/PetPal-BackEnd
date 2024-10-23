@@ -1,6 +1,7 @@
 package com.ingsw.petpal.mapper;
 
 import com.ingsw.petpal.dto.PagosDTO;
+import com.ingsw.petpal.model.entity.Contrats;
 import com.ingsw.petpal.model.entity.Pagos;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ public class PagosMapper {
     }
 
     public Pagos toEntity(PagosDTO pagosDTO) {
-        return modelMapper.map(pagosDTO, Pagos.class);
+       return modelMapper.map(pagosDTO, Pagos.class);
     }
+
 }
