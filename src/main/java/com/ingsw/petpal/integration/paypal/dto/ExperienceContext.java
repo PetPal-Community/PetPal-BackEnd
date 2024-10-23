@@ -1,4 +1,4 @@
-package com.ingsw.invoiceapi.integration.payment.paypal.dto;
+package com.ingsw.petpal.integration.paypal.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;

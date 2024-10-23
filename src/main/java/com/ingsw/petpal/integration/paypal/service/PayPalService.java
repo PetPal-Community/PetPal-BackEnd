@@ -1,5 +1,6 @@
-package com.ingsw.invoiceapi.integration.payment.paypal.service;
+package com.ingsw.petpal.integration.paypal.service;
 
+import com.ingsw.invoiceapi.exception.ResourceNotFoundException;
 import com.ingsw.invoiceapi.integration.payment.paypal.dto.*;
 import com.ingsw.invoiceapi.model.entity.Invoice;
 import com.ingsw.invoiceapi.repository.InvoiceRepository;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
-import com.ingsw.invoiceapi.exception.ResourceNotFoundException;
 
 import java.util.Base64;
 import java.util.Collections;

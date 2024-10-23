@@ -1,4 +1,4 @@
-package com.ingsw.invoiceapi.dto;
+package com.ingsw.petpal.dto;
 
 import lombok.Data;
 

@@ -1,5 +1,6 @@
 package com.ingsw.petpal.model.entity;
 
+import com.ingsw.petpal.model.entity.enums.PaymentStatus;
 import jakarta.persistence.*;
 
 import lombok.Data;
@@ -17,7 +18,9 @@ public class Pagos {
 
     private String metodoPago;
 
-    private String estadoPago;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estadoPago")
+    private PaymentStatus estadoPago;
 
     private LocalDateTime fechaPago;
 
