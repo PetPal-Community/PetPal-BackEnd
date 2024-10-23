@@ -4,6 +4,7 @@ import com.ingsw.petpal.model.entity.Services;
 import com.ingsw.petpal.service.ServicesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/services")
-
+@PreAuthorize("hasAnyRole('ADMIN','CARER')")
 public class ServicesController {
     private final ServicesService servicesService;
 

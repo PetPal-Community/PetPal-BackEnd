@@ -49,9 +49,9 @@ public class CarerServiceImpl implements CarerService {
 
         carerFromDb.setNombre(updateCarer.getNombre());
         carerFromDb.setApellido(updateCarer.getApellido());
-        carerFromDb.setEmail(updateCarer.getEmail());
+        //carerFromDb.setEmail(updateCarer.getEmail());
         carerFromDb.setTelefono(updateCarer.getTelefono());
-        carerFromDb.setContrasenia(updateCarer.getContrasenia());
+        //carerFromDb.setContrasenia(updateCarer.getContrasenia());
 
         return carerRepository.save(carerFromDb);
     }
