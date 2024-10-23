@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+// Asegurando que los cambios se aplicaron bien en el github
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/authenticacion")
