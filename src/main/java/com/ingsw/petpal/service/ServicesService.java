@@ -1,5 +1,9 @@
 package com.ingsw.petpal.service;
 
+import com.ingsw.petpal.dto.ReviewDTO;
+import com.ingsw.petpal.dto.ReviewDetailsDTO;
+import com.ingsw.petpal.dto.ServicesDTO;
+import com.ingsw.petpal.dto.ServicesDetailsDTO;
 import com.ingsw.petpal.model.entity.Services;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -7,13 +11,13 @@ import java.util.List;
 
 public interface ServicesService {
 
-    List<Services> findAll();
-    Services create(Services medicDocuments);
-    Services findById(int id);
-    Services update(Services medicDocuments);
+    List<ServicesDetailsDTO> getAll();
 
-    @Transactional
-    Services update(Integer id, Services updateServices);
+    ServicesDetailsDTO findById(Integer id);
+
+    ServicesDetailsDTO create(ServicesDTO service);
+
+    ServicesDetailsDTO update(Integer id, ServicesDTO updatedservice);
 
     void delete(Integer id);
 }

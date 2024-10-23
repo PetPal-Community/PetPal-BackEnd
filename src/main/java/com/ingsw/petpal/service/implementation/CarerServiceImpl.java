@@ -1,6 +1,9 @@
 package com.ingsw.petpal.service.implementation;
 
+import com.ingsw.petpal.dto.CarerDTO;
+import com.ingsw.petpal.exception.BadRequestException;
 import com.ingsw.petpal.exception.ResourceNotFoundException;
+import com.ingsw.petpal.mapper.CarerMapper;
 import com.ingsw.petpal.model.entity.Carer;
 import com.ingsw.petpal.model.entity.MedicDocuments;
 import com.ingsw.petpal.repository.CarerRepository;
@@ -17,49 +20,64 @@ import java.util.List;
 public class CarerServiceImpl implements CarerService {
 
     private final CarerRepository carerRepository;
+    private final CarerMapper carerMapper;
 
     @Transactional(readOnly = true)
     @Override
-    public List<Carer> findAll() {
-        return carerRepository.findAll();
+    public List<CarerDTO> getAll() {
+        List<Carer> cuidadores = carerRepository.findAll();
+        return cuidadores.stream()
+                .map(carerMapper::toDTO)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public CarerDTO findById(Integer id) {
+        Carer carer = carerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Carer no encontrado"));
+        return carerMapper.toDTO(carer);
     }
 
     @Transactional
     @Override
-    public Carer create(Carer carer) {
-        return carerRepository.save(carer);
-    }
+    public CarerDTO create(CarerDTO carerDTO) {
+        carerRepository.findByNombreAndApellido(carerDTO.getNombre(), carerDTO.getApellido())
+                .ifPresent(carer -> {
+                    throw new BadRequestException("El Cuidador ya existe con el mismo nombre y apellido");
+                });
 
-    @Transactional(readOnly = true)
-    @Override
-    public Carer findById(int id) {
-        return carerRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("not found" + id));
-    }
-
-
-    @Override
-    public Carer update(Carer carer) {
-        return null;
+        Carer carer = carerMapper.toEntity(carerDTO);
+        carer = carerRepository.save(carer);
+        return carerMapper.toDTO(carer);
     }
 
     @Transactional
     @Override
-    public Carer update(Integer id, Carer updateCarer) {
-        Carer carerFromDb = findById(id);
+    public CarerDTO update(Integer id, CarerDTO updatedCarerDTO) {
+        Carer carerfromDb = carerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cuidador no encontrado"));
 
-        carerFromDb.setNombre(updateCarer.getNombre());
-        carerFromDb.setApellido(updateCarer.getApellido());
-        carerFromDb.setEmail(updateCarer.getEmail());
-        carerFromDb.setTelefono(updateCarer.getTelefono());
-        carerFromDb.setContrasenia(updateCarer.getContrasenia());
+        carerRepository.findByNombreAndApellido(updatedCarerDTO.getNombre(), updatedCarerDTO.getApellido())
+                .filter(existingCarer -> !existingCarer.getId().equals(id))
+                .ifPresent(existingCarer -> {throw new BadRequestException("El cuidador ya existe con el mismo nombre y apellido paterno");});
 
-        return carerRepository.save(carerFromDb);
+        carerfromDb.setNombre(updatedCarerDTO.getNombre());
+        carerfromDb.setApellido(updatedCarerDTO.getApellido());
+        carerfromDb.setEmail(updatedCarerDTO.getEmail());
+        carerfromDb.setTelefono(updatedCarerDTO.getTelefono());
+        carerfromDb.setContrasenia(updatedCarerDTO.getContrasenia());
+
+        carerfromDb = carerRepository.save(carerfromDb);
+
+        return carerMapper.toDTO(carerfromDb);
     }
 
     @Transactional
     @Override
     public void delete(Integer id) {
-        Carer carerFromdb = findById(id);
-        carerRepository.delete(carerFromdb);
+        Carer carerFromDb = carerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cauidador no encontrado"));
+        carerRepository.delete(carerFromDb);
     }
+
 }

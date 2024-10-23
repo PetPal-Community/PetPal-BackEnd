@@ -17,7 +17,6 @@ public class Review {
 
     private float calificacion;
 
-
     private String comentario;
 
     private LocalDateTime fechaCreacion;

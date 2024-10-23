@@ -4,9 +4,13 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
+@Data
 public class CarerDTO {
-    /*
+
+    private Integer id;
+
     @NotBlank(message = "El nombre es obligatorio")
     @Size(min = 3, max = 20, message = "nombre debe ser de 3 a 20 caracteres")
     private String nombre;
@@ -25,5 +29,5 @@ public class CarerDTO {
 
     @NotBlank
     @Size(min = 8, max = 20)
-    private String contrasenia;*/
+    private String contrasenia;
 }

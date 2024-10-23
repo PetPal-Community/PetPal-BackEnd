@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerAPIConfig {
 
     // Puedes establecer la URL de tu servidor de desarrollo en application.properties
-    @Value("${PetPal.openapi.dev-url}")
+    @Value("http://localhost:8080/api/v2")
     private String devUrl;
 
     @Bean

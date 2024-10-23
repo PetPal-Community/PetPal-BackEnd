@@ -1,14 +1,29 @@
 package com.ingsw.petpal.dto;
 
+import jakarta.validation.constraints.*;
+import lombok.Data;
+
+import java.time.LocalDateTime;
+
+@Data
 public class ReviewDTO {
-    /*
+
+    private Integer id;
+
     @DecimalMin(value = "0.0", message = "La calificación no puede ser menor a 0")
     @DecimalMax(value = "5.0", message = "La calificación no puede ser mayor a 5")
     private float calificacion;
 
-    @Max(value = 120,message = "comentario no puede ser mayor a 120")
+    @Size(min = 5, max = 120, message = "El comentario debe ser de 5 a 120 caracteres")
     private String comentario;
 
-    @NotNull(message = "FEcha obligatoria")
-    private LocalDateTime fechaCreacion;*/
+    private LocalDateTime fechaCreacion;
+
+    @NotNull(message = "Usuario es obligatorio")
+    private Integer usuario;
+
+    @NotNull(message = "Cuidador es obligatorio")
+    private Integer cuidador;
+
+
 }
