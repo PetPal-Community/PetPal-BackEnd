@@ -1,5 +1,6 @@
 package com.ingsw.petpal.service.implementation;
-/*
+
+import com.ingsw.petpal.dto.PagosDTO;
 import com.ingsw.petpal.dto.PaymentCaptureResponse;
 import com.ingsw.petpal.dto.PaymentOrderResponse;
 import com.ingsw.petpal.integration.paypal.dto.OrderCaptureResponse;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CheckoutServiceImpl implements CheckoutService {
-    /*
+
     private final PayPalService payPalService;
     private final PagosService pagosService;
 
@@ -43,7 +44,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         if (completed) {
             String purchaseIdStr = orderCaptureResponse.getPurchaseUnits().get(0).getReferenceId();
 
-            PagosService invoiceDetailsDTO = invoiceService.confirmPurchase(Integer.parseInt(purchaseIdStr));
+            PagosDTO invoiceDetailsDTO = pagosService.confirmPurchase(Integer.parseInt(purchaseIdStr));
             paypalCaptureResponse.setPurchaseId(invoiceDetailsDTO.getId());
 
             //sendPurchaseConfirmationEmail(purchaseDTO);
@@ -55,4 +56,4 @@ public class CheckoutServiceImpl implements CheckoutService {
 
 }
 
- */
+

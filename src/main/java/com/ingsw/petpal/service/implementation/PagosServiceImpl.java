@@ -4,6 +4,7 @@ import com.ingsw.petpal.dto.PagosDTO;
 import com.ingsw.petpal.exception.DuplicatePaymentException;
 import com.ingsw.petpal.exception.PaymentProcessingException;
 import com.ingsw.petpal.exception.ResourceNotFoundException;
+import com.ingsw.petpal.model.entity.enums.PaymentStatus;
 import com.ingsw.petpal.repository.ContratsRepository;
 import com.ingsw.petpal.mapper.PagosMapper;
 import com.ingsw.petpal.model.entity.Contrats;
@@ -55,7 +56,7 @@ public class PagosServiceImpl implements PagosService {
 
         // Mapear DTO a entidad
         Pagos pagos = pagosMapper.toEntity(pagosDTO);
-        pagos.setEstado(contrato.getEstado());
+        pagos.setEstadoPago(PaymentStatus.PENDING);
         pagos.setContratacionIdd(contrato.getId());
         pagos.setValorPago(pagosDTO.getValorPago());
         pagos.setContrato(contrato);
@@ -75,7 +76,7 @@ public class PagosServiceImpl implements PagosService {
         Pagos pagosFromDb = pagosRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pago no encontrado"));
 
         pagosFromDb.setMetodoPago(updatedPagosDTO.getMetodoPago());
-        pagosFromDb.setEstadoPago(updatedPagosDTO.getEstadoPago());
+        //pagosFromDb.setEstadoPago(updatedPagosDTO.getEstadoPago());
         pagosFromDb.setFechaPago(updatedPagosDTO.getFechaPago());
 
         pagosFromDb = pagosRepository.save(pagosFromDb);
@@ -87,5 +88,20 @@ public class PagosServiceImpl implements PagosService {
     public void delete(Integer id) {
         Pagos pagosFromDb = pagosRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pago no encontrado"));
         pagosRepository.delete(pagosFromDb);
+    }
+
+    @Override
+    public PagosDTO confirmPurchase(Integer pagosId) {
+
+        // Obtener la entidad Invoice directamente desde el repositorio
+        Pagos invoice = pagosRepository.findById(pagosId)
+                .orElseThrow(() -> new ResourceNotFoundException("Invoice not found"));
+
+        // Confirmar la compra: cambio de estado
+        invoice.setEstadoPago(PaymentStatus.COMPLETED);
+
+        // Guardar y retornar el DTO actualizado
+        Pagos updatedInvoice = pagosRepository.save(invoice);
+        return pagosMapper.toDTO(updatedInvoice);
     }
 }

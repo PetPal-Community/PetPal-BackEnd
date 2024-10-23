@@ -25,10 +25,7 @@ public class Pagos {
 
     private LocalDateTime fechaPago;
 
-
     private BigDecimal valorPago;
-
-    private String estado;
 
     private Integer contratacionIdd;
     @ManyToOne

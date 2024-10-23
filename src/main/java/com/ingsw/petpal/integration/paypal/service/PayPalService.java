@@ -1,9 +1,10 @@
 package com.ingsw.petpal.integration.paypal.service;
 
-import com.ingsw.invoiceapi.exception.ResourceNotFoundException;
-import com.ingsw.invoiceapi.integration.payment.paypal.dto.*;
-import com.ingsw.invoiceapi.model.entity.Invoice;
-import com.ingsw.invoiceapi.repository.InvoiceRepository;
+import com.ingsw.petpal.exception.ResourceNotFoundException;
+import com.ingsw.petpal.integration.paypal.dto.*;
+
+import com.ingsw.petpal.model.entity.Pagos;
+import com.ingsw.petpal.repository.PagosRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class PayPalService {
     private String apiBase;
 
     @NonNull
-    private InvoiceRepository invoiceRepository;
+    private PagosRepository pagosRepository;
     private RestClient paypalClient;
 
     @PostConstruct
@@ -63,7 +64,7 @@ public class PayPalService {
         //Purchase purchase= purchaseRepository.findById(purchaseId)
         //        .orElseThrow(ResourceNotFoundException::new);
 
-        Invoice invoice = invoiceRepository.findById(invoiceId)
+        Pagos pago = pagosRepository.findById(invoiceId)
                 .orElseThrow(ResourceNotFoundException::new);
 
         //Construcción de la solicitud de Pedido de Pago
@@ -72,10 +73,10 @@ public class PayPalService {
 
         Amount amount = new Amount();
         amount.setCurrencyCode("USD");
-        amount.setValue(invoice.getTotal().toString());
+        amount.setValue(pago.getValorPago().toString());
 
         PurchaseUnit purchaseUnit = new PurchaseUnit();
-        purchaseUnit.setReferenceId(invoice.getId().toString());
+        purchaseUnit.setReferenceId(pago.getId().toString());
         purchaseUnit.setAmount(amount);
 
         orderRequest.setPurchaseUnits(Collections.singletonList(purchaseUnit));
