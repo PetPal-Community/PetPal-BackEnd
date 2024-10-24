@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping
+@RequestMapping("/userGeneral")
 @PreAuthorize("hasAnyRole('ADMIN','CUSTOMER','CARER')")
 public class UserGeneralController {
     private final UserGeneralService userGeneralService;
@@ -26,4 +26,7 @@ public class UserGeneralController {
         UserGeneralProfileDTO userGeneralProfileDTO = userGeneralService.getUserGeneralById(id);
         return new ResponseEntity<>(userGeneralProfileDTO, HttpStatus.OK);
     }
+
+
+
 }
