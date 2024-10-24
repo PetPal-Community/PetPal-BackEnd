@@ -14,4 +14,6 @@ public interface PagosService {
     PagosDTO update(Integer id, PagosDTO updatedPagosDTO);
 
     void delete(Integer id);
+
+    PagosDTO confirmPurchase(Integer pagosId);
 }

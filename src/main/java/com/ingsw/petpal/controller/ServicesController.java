@@ -1,9 +1,14 @@
 package com.ingsw.petpal.controller;
 
-import com.ingsw.petpal.model.entity.Services;
+
+import com.ingsw.petpal.dto.ServicesDTO;
+import com.ingsw.petpal.dto.ServicesDetailsDTO;
 import com.ingsw.petpal.service.ServicesService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,36 +16,39 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/services")
-
+@PreAuthorize("hasAnyRole('ADMIN','CARER')")
 public class ServicesController {
     private final ServicesService servicesService;
 
-
     @GetMapping
-    public List<Services> list() {
-        return servicesService.findAll();
-    }
-
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public Services create(@RequestBody Services services) {
-        return servicesService.create(services);
+    public ResponseEntity<List<ServicesDetailsDTO>> getAllServices() {
+        List<ServicesDetailsDTO> services = servicesService.getAll();
+        return new ResponseEntity<List<ServicesDetailsDTO>>(services, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Services get(@PathVariable Integer id){
-        return servicesService.findById(id);
+    public ResponseEntity<ServicesDetailsDTO> getServiceById(@PathVariable("id") Integer id){
+        ServicesDetailsDTO service = servicesService.findById(id);
+        return new ResponseEntity<ServicesDetailsDTO>(service, HttpStatus.OK);
     }
 
+    @PostMapping
+    public ResponseEntity<ServicesDetailsDTO> createService(@Valid @RequestBody ServicesDTO servicesDTO) {
+        ServicesDetailsDTO serviceCreado = servicesService.create(servicesDTO);
+        return new ResponseEntity<ServicesDetailsDTO>(serviceCreado, HttpStatus.CREATED);
+    }
+
+
     @PutMapping("/{id}")
-    public Services update(@PathVariable Integer id, @RequestBody Services services){
-        return servicesService.update(id, services);
+    public ResponseEntity<ServicesDetailsDTO> updateService(@PathVariable Integer id,@Valid @RequestBody ServicesDTO servicesDTO) {
+        ServicesDetailsDTO updateService = servicesService.update(id,servicesDTO);
+        return new ResponseEntity<>(updateService, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id){
+    public ResponseEntity<Void> deleteService(@PathVariable Integer id){
         servicesService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 
 }

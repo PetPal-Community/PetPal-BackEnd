@@ -25,7 +25,6 @@ public class PagosDTO {
     private LocalDateTime fechaPago;
 
 
-
     @NotNull(message = "El monto del pago es obligatorio")
     @DecimalMin(value = "0.0", inclusive = false, message = "El monto debe ser mayor que cero")
     private BigDecimal valorPago;

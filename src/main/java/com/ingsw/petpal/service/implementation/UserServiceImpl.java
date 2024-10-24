@@ -40,10 +40,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UsuarioDTO create(UsuarioDTO usuarioDTO) {
         // Validación de duplicado por email o cualquier otro campo único
-        usuarioRepository.findByEmail(usuarioDTO.getEmail())
+        /*usuarioRepository.findByEmail(usuarioDTO.getEmail())
                 .ifPresent(usuario -> {
                     throw new BadRequestException("El usuario ya existe con el mismo email");
-                });
+                });*/
 
         // Mapear DTO a entidad
         User usuario = usuarioMapper.toEntity(usuarioDTO);
@@ -63,16 +63,16 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
         // Validar que no haya duplicado de email con otro usuario
-        usuarioRepository.findByEmail(updatedUsuarioDTO.getEmail())
+        /*usuarioRepository.findByEmail(updatedUsuarioDTO.getEmail())
                 .filter(existingUsuario -> !existingUsuario.getId().equals(id))
                 .ifPresent(existingUsuario -> {
                     throw new BadRequestException("El usuario ya existe con el mismo email");
-                });
+                });*/
 
         // Actualizar los campos del usuario
         usuarioFromDb.setNombre(updatedUsuarioDTO.getNombre());
         usuarioFromDb.setApellido(updatedUsuarioDTO.getApellido());
-        usuarioFromDb.setEmail(updatedUsuarioDTO.getEmail());
+        //usuarioFromDb.setEmail(updatedUsuarioDTO.getEmail());
         usuarioFromDb.setTelefono(updatedUsuarioDTO.getTelefono());
 
         // Guardar el usuario actualizado
