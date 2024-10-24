@@ -4,10 +4,12 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
+@Data
 @Embeddable
 @EqualsAndHashCode
 public class likesPublicacionFK implements Serializable {

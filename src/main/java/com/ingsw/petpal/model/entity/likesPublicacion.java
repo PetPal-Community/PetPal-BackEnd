@@ -8,18 +8,18 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name="likesPublicacion")
-@IdClass(likesPublicacionFK.class)
+@Table(name = "likes_publicacion")
+@IdClass(likesPublicacionFK.class) // Indica que se utiliza una clave compuesta
 public class likesPublicacion implements Serializable {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_user_likes"))
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_like_user"))
     private User usuario;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "publicacion_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_publicacion_likes"))
+    @JoinColumn(name = "publicacion_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_like_publicacion"))
     private Publicaciones publicacion;
 
     private LocalDateTime fecha;
