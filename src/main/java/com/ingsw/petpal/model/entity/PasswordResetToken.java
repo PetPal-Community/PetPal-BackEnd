@@ -30,7 +30,7 @@ public class PasswordResetToken {
     @NotNull
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private UserGeneral user;
 
     public void setExpiration(int minutes) {
         this.expiration = LocalDateTime.now().plusMinutes(minutes);

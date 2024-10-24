@@ -20,7 +20,6 @@ public class User  {
 
     private String telefono;
 
-
     // Asignacion de UserGeneral:
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

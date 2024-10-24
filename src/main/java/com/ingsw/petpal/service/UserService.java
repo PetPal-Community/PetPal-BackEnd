@@ -16,7 +16,6 @@ public interface UserService {
     UsuarioDTO update(Integer id, UsuarioDTO updatedUsuarioDTO);
 
 
-
     void delete(Integer id);
 }
 
