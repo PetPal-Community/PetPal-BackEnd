@@ -14,7 +14,8 @@ import java.util.List;
 @Table(name = "publicaciones")
 public class Publicaciones implements Serializable {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String contenido;
@@ -23,13 +24,14 @@ public class Publicaciones implements Serializable {
 
     private LocalDateTime fechaActualización;
 
-    // PUBLICACIONES CREADAS POR USUARIOS(NO NULLABLE) y COMUNIDADES(NULLABLE)
+    // PUBLICACIONES CREADAS POR USUARIOS (NO NULLABLE)
     @ManyToOne
-    @JoinColumn(name = "usuario_id",nullable = false,referencedColumnName = "id",foreignKey = @ForeignKey(name = "fk_usuario_publicacion") )
+    @JoinColumn(name = "usuario_id", nullable = false, referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_usuario_publicacion"))
     private User usuario;
 
+    // COMUNIDADES (NULLABLE)
     @ManyToOne
-    @JoinColumn(name = "comunidad_id",referencedColumnName = "id",foreignKey = @ForeignKey(name = "fk_usuario_publicacion") )
+    @JoinColumn(name = "comunidad_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_comunidad_publicacion"))
     private Community comunidad;
     //
 
@@ -44,6 +46,4 @@ public class Publicaciones implements Serializable {
     @OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL)
     private List<coments> comentarios;
     //
-
-
 }

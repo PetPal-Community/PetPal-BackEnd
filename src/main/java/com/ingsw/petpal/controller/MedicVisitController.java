@@ -1,54 +1,48 @@
 package com.ingsw.petpal.controller;
 
-import com.ingsw.petpal.dto.MedicVisitDTO;
-import com.ingsw.petpal.model.entity.MedicVisit;
-import com.ingsw.petpal.model.entity.User;
+import com.ingsw.petpal.dto.MedicVisitCreateUpdateDTO;
+import com.ingsw.petpal.dto.MedicVisitDetailsDTO;
 import com.ingsw.petpal.service.MedicVisitService;
-import com.ingsw.petpal.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-@RestController
+
 @RequiredArgsConstructor
+@RestController
 @RequestMapping("/medicvisit")
 public class MedicVisitController {
-
     private final MedicVisitService medicVisitService;
 
     @GetMapping
-    public ResponseEntity<List<MedicVisitDTO>> getAllMedicVisits() {
-        List<MedicVisitDTO> visits = medicVisitService.getAll();
+    public ResponseEntity<List<MedicVisitDetailsDTO>> getAllMedicVisits() {
+        List<MedicVisitDetailsDTO> visits = medicVisitService.findAll();
         return new ResponseEntity<>(visits, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MedicVisitDTO> getMedicVisitById(@PathVariable("id") Integer id) {
-        MedicVisitDTO visit = medicVisitService.findById(id);
+    public ResponseEntity<MedicVisitDetailsDTO> getMedicVisitById(@PathVariable Integer id) {
+        MedicVisitDetailsDTO visit = medicVisitService.findById(id);
         return new ResponseEntity<>(visit, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<MedicVisitDTO> createMedicVisit(@Valid @RequestBody MedicVisitDTO medicVisitDTO) {
-        MedicVisitDTO createdVisit = medicVisitService.create(medicVisitDTO);
+    public ResponseEntity<MedicVisitDetailsDTO> createMedicVisit(@Valid @RequestBody MedicVisitCreateUpdateDTO medicVisitCreateUpdateDTO) {
+        MedicVisitDetailsDTO createdVisit = medicVisitService.create(medicVisitCreateUpdateDTO);
         return new ResponseEntity<>(createdVisit, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MedicVisitDTO> updateMedicVisit(@PathVariable("id") Integer id, @Valid @RequestBody MedicVisitDTO medicVisitDTO) {
-        MedicVisitDTO updatedVisit = medicVisitService.update(id, medicVisitDTO);
+    public ResponseEntity<MedicVisitDetailsDTO> updateMedicVisit(@PathVariable Integer id, @Valid @RequestBody MedicVisitCreateUpdateDTO medicVisitCreateUpdateDTO) {
+        MedicVisitDetailsDTO updatedVisit = medicVisitService.update(id, medicVisitCreateUpdateDTO);
         return new ResponseEntity<>(updatedVisit, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMedicVisit(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deleteMedicVisit(@PathVariable Integer id) {
         medicVisitService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

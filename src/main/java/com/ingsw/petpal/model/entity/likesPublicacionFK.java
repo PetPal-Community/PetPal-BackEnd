@@ -8,16 +8,15 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
-// EN PRUEBAS
 @Embeddable
 @EqualsAndHashCode
 public class likesPublicacionFK implements Serializable {
 
     @ManyToOne
-    @JoinColumn(name="usuarioId", referencedColumnName = "id", foreignKey = @ForeignKey(name="fk_like_user"))
+    @JoinColumn(name="usuario_id", referencedColumnName = "id", foreignKey = @ForeignKey(name="fk_like_user"))
     private User usuario;
 
     @ManyToOne
-    @JoinColumn(name="publicacionId", referencedColumnName = "id", foreignKey = @ForeignKey(name="fk_like_publicacion"))
+    @JoinColumn(name="publicacion_id", referencedColumnName = "id", foreignKey = @ForeignKey(name="fk_like_publicacion"))
     private Publicaciones publicacion;
 }

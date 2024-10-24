@@ -1,74 +1,67 @@
 package com.ingsw.petpal.service.implementation;
 
-import com.ingsw.petpal.dto.ReminderDTO;
-import com.ingsw.petpal.exception.ResourceNotFoundException;
+import com.ingsw.petpal.dto.ReminderCreateUpdateDTO;
+import com.ingsw.petpal.dto.ReminderDetailsDTO;
 import com.ingsw.petpal.mapper.ReminderMapper;
 import com.ingsw.petpal.model.entity.Reminder;
 import com.ingsw.petpal.repository.ReminderRepository;
 import com.ingsw.petpal.service.ReminderService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class ReminderServiceImpl implements ReminderService {
-
     private final ReminderRepository reminderRepository;
     private final ReminderMapper reminderMapper;
 
-    @Transactional(readOnly = true)
     @Override
-    public List<ReminderDTO> getAll() {
-        List<Reminder> reminders = reminderRepository.findAll();
-        return reminders.stream()
-                .map(reminderMapper::toDTO)
-                .toList();
+    public List<ReminderDetailsDTO> findAll() {
+        return reminderRepository.findAll()
+                .stream()
+                .map(reminderMapper::toDetailsDTO)
+                .collect(Collectors.toList());
     }
 
-    @Transactional(readOnly = true)
     @Override
-    public ReminderDTO findById(Integer id) {
+    public ReminderDetailsDTO findById(Integer id) {
         Reminder reminder = reminderRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Recordatorio no encontrado con id: " + id));
-        return reminderMapper.toDTO(reminder);
+                .orElseThrow(() -> new RuntimeException("Reminder not found"));
+        return reminderMapper.toDetailsDTO(reminder);
     }
 
-    @Transactional
     @Override
-    public ReminderDTO create(ReminderDTO reminderDTO) {
-        // Aquí puedes agregar validaciones adicionales si es necesario
-        Reminder reminder = reminderMapper.toEntity(reminderDTO);
-        reminder = reminderRepository.save(reminder);
-        return reminderMapper.toDTO(reminder);
+    @Transactional
+    public ReminderDetailsDTO create(ReminderCreateUpdateDTO reminderCreateUpdateDTO) {
+        Reminder reminder = reminderMapper.toEntity(reminderCreateUpdateDTO);
+        Reminder savedReminder = reminderRepository.save(reminder);
+        return reminderMapper.toDetailsDTO(savedReminder);
     }
 
-    @Transactional
     @Override
-    public ReminderDTO update(Integer id, ReminderDTO updatedReminderDTO) {
-        Reminder reminderFromDb = reminderRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Recordatorio no encontrado con id: " + id));
+    @Transactional
+    public ReminderDetailsDTO update(Integer id, ReminderCreateUpdateDTO reminderCreateUpdateDTO) {
+        Reminder reminder = reminderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reminder not found"));
 
-        // Aquí puedes agregar validaciones adicionales si es necesario
-        reminderFromDb.setTipoRecordatorio(updatedReminderDTO.getTipoRecordatorio());
-        reminderFromDb.setDescripcion(updatedReminderDTO.getDescripcion());
-        reminderFromDb.setHora(updatedReminderDTO.getHora());
+        // Actualiza los campos
+        reminder.setTipoRecordatorio(reminderCreateUpdateDTO.getTipoRecordatorio());
+        reminder.setDescripcion(reminderCreateUpdateDTO.getDescripcion());
+        reminder.setHora(reminderCreateUpdateDTO.getHora());
 
-        reminderFromDb = reminderRepository.save(reminderFromDb);
-        return reminderMapper.toDTO(reminderFromDb);
+        Reminder updatedReminder = reminderRepository.save(reminder);
+        return reminderMapper.toDetailsDTO(updatedReminder);
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void delete(Integer id) {
-        Reminder reminderFromDb = reminderRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Recordatorio no encontrado con id: " + id));
-        reminderRepository.delete(reminderFromDb);
+        Reminder reminder = reminderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reminder not found"));
+        reminderRepository.delete(reminder);
     }
 }

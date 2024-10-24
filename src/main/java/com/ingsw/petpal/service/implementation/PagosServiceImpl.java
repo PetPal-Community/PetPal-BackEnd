@@ -4,7 +4,9 @@ import com.ingsw.petpal.dto.PagosDTO;
 import com.ingsw.petpal.exception.DuplicatePaymentException;
 import com.ingsw.petpal.exception.PaymentProcessingException;
 import com.ingsw.petpal.exception.ResourceNotFoundException;
+import com.ingsw.petpal.repository.ContratsRepository;
 import com.ingsw.petpal.mapper.PagosMapper;
+import com.ingsw.petpal.model.entity.Contrats;
 import com.ingsw.petpal.model.entity.Pagos;
 import com.ingsw.petpal.repository.PagosRepository;
 import com.ingsw.petpal.service.PagosService;
@@ -20,6 +22,8 @@ public class PagosServiceImpl implements PagosService {
 
     private final PagosRepository pagosRepository;
     private final PagosMapper pagosMapper;
+
+    private final ContratsRepository contratsRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -44,9 +48,16 @@ public class PagosServiceImpl implements PagosService {
                     throw new DuplicatePaymentException("Ya existe un pago con el mismo método y estado");
                 });
 
+
+        // Verificar si el contrato existe
+        Contrats contrato = contratsRepository.findById(pagosDTO.getContratacionIdd())
+                .orElseThrow(() -> new ResourceNotFoundException("Contrato no encontrado con id: " + pagosDTO.getContratacionIdd()));
+
         // Mapear DTO a entidad
         Pagos pagos = pagosMapper.toEntity(pagosDTO);
-
+        pagos.setContratacionIdd(contrato.getId());
+        pagos.setValorPago(pagosDTO.getValorPago());
+        pagos.setContrato(contrato);
         // Intentar guardar el pago
         try {
             pagos = pagosRepository.save(pagos);

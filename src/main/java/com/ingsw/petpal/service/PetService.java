@@ -1,16 +1,19 @@
 package com.ingsw.petpal.service;
 
-import com.ingsw.petpal.dto.PetDTO;
-import com.ingsw.petpal.model.entity.Pet;
-
+import com.ingsw.petpal.dto.PetCreateUpdateDTO;
+import com.ingsw.petpal.dto.PetDetailsDTO;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 public interface PetService {
-    List<PetDTO> getAllPets();
-    PetDTO findPetById(Integer id);
-    PetDTO createPet(PetDTO petDTO);
-    PetDTO updatePet(Integer id, PetDTO updatedPetDTO);
-    void deletePet(Integer id);
+    List<PetDetailsDTO> findAll();
+
+    PetDetailsDTO create(PetCreateUpdateDTO pet);
+
+    PetDetailsDTO findById(int id);
+
+    PetDetailsDTO update(Integer id, PetCreateUpdateDTO pet);
+
+    void delete(Integer id);
 }
