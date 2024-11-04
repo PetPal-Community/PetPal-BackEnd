@@ -6,6 +6,7 @@ import com.ingsw.petpal.exception.PaymentProcessingException;
 import com.ingsw.petpal.exception.ResourceNotFoundException;
 import com.ingsw.petpal.model.entity.enums.PaymentStatus;
 import com.ingsw.petpal.repository.ContratsRepository;
+
 import com.ingsw.petpal.mapper.PagosMapper;
 import com.ingsw.petpal.model.entity.Contrats;
 import com.ingsw.petpal.model.entity.Pagos;
@@ -77,6 +78,7 @@ public class PagosServiceImpl implements PagosService {
 
         pagosFromDb.setMetodoPago(updatedPagosDTO.getMetodoPago());
         //pagosFromDb.setEstadoPago(updatedPagosDTO.getEstadoPago());
+        pagosFromDb.setEstadoPago(PaymentStatus.valueOf(updatedPagosDTO.getEstadoPago()));
         pagosFromDb.setFechaPago(updatedPagosDTO.getFechaPago());
 
         pagosFromDb = pagosRepository.save(pagosFromDb);

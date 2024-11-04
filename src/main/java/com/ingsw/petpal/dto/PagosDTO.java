@@ -16,6 +16,8 @@ public class PagosDTO {
     @Size(max = 30, message = "El método de pago debe tener 30 caracteres o menos")
     private String metodoPago;
 
+    @NotBlank(message = "El estado del pago es obligatorio")
+    @Size(max = 20, message = "El estado del pago debe tener 20 caracteres o menos")
     private String estadoPago;
 
     @NotNull(message = "La fecha del pago es obligatoria")

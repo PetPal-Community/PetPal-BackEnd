@@ -25,9 +25,13 @@ public class Pagos {
 
     private LocalDateTime fechaPago;
 
+
     private BigDecimal valorPago;
 
+    // Corregir
     private Integer contratacionIdd;
+
+
     @ManyToOne
     @JoinColumn(name="contratacion_id",referencedColumnName = "id", foreignKey = @ForeignKey(name="fk_contrato_pago"))
     private Contrats contrato;

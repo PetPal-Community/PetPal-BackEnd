@@ -1,23 +1,18 @@
 package com.ingsw.petpal.service;
 
-import com.ingsw.petpal.dto.MedicVisitDTO;
-import com.ingsw.petpal.model.entity.MedicVisit;
-import com.ingsw.petpal.model.entity.User;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
+import com.ingsw.petpal.dto.MedicVisitCreateUpdateDTO;
+import com.ingsw.petpal.dto.MedicVisitDetailsDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface MedicVisitService {
-    List<MedicVisitDTO> getAll();
+    List<MedicVisitDetailsDTO> findAll();
 
-    MedicVisitDTO findById(Integer id);
+    MedicVisitDetailsDTO create(MedicVisitCreateUpdateDTO medicVisitCreateUpdateDTO);
 
-    MedicVisitDTO create(MedicVisitDTO medicVisitDTO);
+    MedicVisitDetailsDTO findById(Integer id);
 
-    MedicVisitDTO update(Integer id, MedicVisitDTO medicVisitDTO);
+    MedicVisitDetailsDTO update(Integer id, MedicVisitCreateUpdateDTO updatedMedicVisit);
 
     void delete(Integer id);
 }

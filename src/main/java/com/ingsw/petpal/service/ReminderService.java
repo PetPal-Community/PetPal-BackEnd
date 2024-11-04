@@ -1,21 +1,14 @@
 package com.ingsw.petpal.service;
 
-import com.ingsw.petpal.dto.ReminderDTO;
-import com.ingsw.petpal.model.entity.Reminder;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.ingsw.petpal.dto.ReminderCreateUpdateDTO;
+import com.ingsw.petpal.dto.ReminderDetailsDTO;
 
 import java.util.List;
 
 public interface ReminderService {
-
-    List<ReminderDTO> getAll();
-
-    ReminderDTO findById(Integer id);
-
-    ReminderDTO create(ReminderDTO reminderDTO);
-
-    ReminderDTO update(Integer id, ReminderDTO reminderDTO);
-
+    List<ReminderDetailsDTO> findAll();
+    ReminderDetailsDTO findById(Integer id);
+    ReminderDetailsDTO create(ReminderCreateUpdateDTO reminderCreateUpdateDTO);
+    ReminderDetailsDTO update(Integer id, ReminderCreateUpdateDTO reminderCreateUpdateDTO);
     void delete(Integer id);
 }

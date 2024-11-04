@@ -1,7 +1,7 @@
 package com.ingsw.petpal.controller;
 
-import com.ingsw.petpal.dto.PetDTO;
-import com.ingsw.petpal.model.entity.Pet;
+import com.ingsw.petpal.dto.PetCreateUpdateDTO;
+import com.ingsw.petpal.dto.PetDetailsDTO;
 import com.ingsw.petpal.service.PetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,41 +12,40 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
 @RequiredArgsConstructor
+@RestController
 @RequestMapping("/pets")
 @PreAuthorize("hasAnyRole('ADMIN','CUSTOMER')")
 public class PetController {
-
     private final PetService petService;
 
     @GetMapping
-    public ResponseEntity<List<PetDTO>> getAllPets() {
-        List<PetDTO> pets = petService.getAllPets();
+    public ResponseEntity<List<PetDetailsDTO>> getAllPets() {
+        List<PetDetailsDTO> pets = petService.findAll();
         return new ResponseEntity<>(pets, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PetDTO> getPetById(@PathVariable("id") Integer id) {
-        PetDTO pet = petService.findPetById(id);
+    public ResponseEntity<PetDetailsDTO> getPetById(@PathVariable("id") Integer id) {
+        PetDetailsDTO pet = petService.findById(id);
         return new ResponseEntity<>(pet, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<PetDTO> createPet(@Valid @RequestBody PetDTO petDTO) {
-        PetDTO createdPet = petService.createPet(petDTO);
+    public ResponseEntity<PetDetailsDTO> createPet(@Valid @RequestBody PetCreateUpdateDTO petCreateUpdateDTO) {
+        PetDetailsDTO createdPet = petService.create(petCreateUpdateDTO);
         return new ResponseEntity<>(createdPet, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PetDTO> updatePet(@PathVariable("id") Integer id, @Valid @RequestBody PetDTO petDTO) {
-        PetDTO updatedPet = petService.updatePet(id, petDTO);
+    public ResponseEntity<PetDetailsDTO> updatePet(@PathVariable Integer id, @Valid @RequestBody PetCreateUpdateDTO petCreateUpdateDTO) {
+        PetDetailsDTO updatedPet = petService.update(id, petCreateUpdateDTO);
         return new ResponseEntity<>(updatedPet, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePet(@PathVariable("id") Integer id) {
-        petService.deletePet(id);
+    public ResponseEntity<Void> deletePet(@PathVariable Integer id) {
+        petService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
