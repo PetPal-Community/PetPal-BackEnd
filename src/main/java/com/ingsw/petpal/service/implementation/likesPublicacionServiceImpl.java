@@ -10,6 +10,7 @@ import com.ingsw.petpal.service.likesPublicacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,7 @@ public class likesPublicacionServiceImpl implements likesPublicacionService {
 
         like.setUsuario(usuario);
         like.setPublicacion(publicacion);
-        like.setFecha(likesPublicacionDTO.getFecha());
+        like.setFecha(LocalDateTime.now());
 
         likesPublicacionRepository.save(like);
     }

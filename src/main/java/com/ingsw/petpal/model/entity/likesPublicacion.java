@@ -13,14 +13,10 @@ import java.time.LocalDateTime;
 public class likesPublicacion implements Serializable {
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_like_user"))
-    private User usuario;
+    private Integer usuario;
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "publicacion_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_like_publicacion"))
-    private Publicaciones publicacion;
+    private Integer publicacion;
 
     private LocalDateTime fecha;
 }

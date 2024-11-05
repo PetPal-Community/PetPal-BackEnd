@@ -9,4 +9,5 @@ public class likesPublicacionDTO {
     private Integer usuarioId;        // ID del usuario que da el like
     private Integer publicacionId;    // ID de la publicación
     private LocalDateTime fecha;       // Fecha del like
+    private String usuarioPublicacion;
 }
