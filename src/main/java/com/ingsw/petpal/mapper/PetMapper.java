@@ -19,7 +19,7 @@ public class PetMapper {
 
     public PetDetailsDTO toDetailsDTO(Pet pet) {
         PetDetailsDTO petDetailsDTO = modelMapper.map(pet, PetDetailsDTO.class);
-        petDetailsDTO.setUsuarioId(pet.getUsuario() != null ? pet.getUsuario().getId().toString() : null); // Asigna el ID del usuario como String
+        petDetailsDTO.setUsuarioNombre(pet.getUsuario().getNombre());
         return petDetailsDTO;
     }
 

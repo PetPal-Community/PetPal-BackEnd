@@ -8,10 +8,7 @@ import com.ingsw.petpal.exception.ResourceNotFoundException;
 import com.ingsw.petpal.mapper.ReviewMapper;
 import com.ingsw.petpal.mapper.ServicesMapper;
 import com.ingsw.petpal.model.entity.*;
-import com.ingsw.petpal.repository.CarerRepository;
-import com.ingsw.petpal.repository.ReviewRepository;
-import com.ingsw.petpal.repository.ServicesRepository;
-import com.ingsw.petpal.repository.UserRepository;
+import com.ingsw.petpal.repository.*;
 import com.ingsw.petpal.service.ServicesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +24,7 @@ public class ServicesServiceImpl implements ServicesService {
     private final ServicesRepository servicesRepository;
     private final ServicesMapper servicesMapper;
     private final CarerRepository carerRepository;
+    private final UserGeneralRepository userGeneralRepository;
 
 
     @Transactional(readOnly = true)
@@ -48,7 +46,12 @@ public class ServicesServiceImpl implements ServicesService {
     @Transactional
     @Override
     public ServicesDetailsDTO create(ServicesDTO servicesDTO) {
-        Carer carer = carerRepository.findById(servicesDTO.getCuidador()).orElseThrow(() -> new ResourceNotFoundException("Cuidador no encontrado con id: " + servicesDTO.getCuidador()));
+        UserGeneral userGCarer = userGeneralRepository.findById(servicesDTO.getCuidadorGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + servicesDTO.getCuidadorGId()));
+        Integer userIDCarer = userGCarer.getCarer().getId();
+
+        Carer carer = carerRepository.findById(userIDCarer).orElseThrow(() -> new ResourceNotFoundException("carer not found with id: " + userIDCarer));
+
         Services services = servicesMapper.toEntity(servicesDTO);
         services.setCuidador(carer);
         return servicesMapper.toDetailsDTO(servicesRepository.save(services));
@@ -60,7 +63,12 @@ public class ServicesServiceImpl implements ServicesService {
         Services servicesfromdb = servicesRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Servicio no encontrado con id " + id));
 
-        Carer carer = carerRepository.findById(updatedServicesDTO.getCuidador()).orElseThrow(() -> new ResourceNotFoundException("Cuidador no encontrado con id: " + updatedServicesDTO.getCuidador()));
+        UserGeneral userGCarer = userGeneralRepository.findById(updatedServicesDTO.getCuidadorGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + updatedServicesDTO.getCuidadorGId()));
+        Integer userIDCarer = userGCarer.getCarer().getId();
+
+        Carer carer = carerRepository.findById(userIDCarer).orElseThrow(() -> new ResourceNotFoundException("carer not found with id: " + userIDCarer));
+
         servicesfromdb.setCuidador(carer);
         servicesfromdb.setTipo_servicio(updatedServicesDTO.getTipo_servicio());
         servicesfromdb.setDescripcion(updatedServicesDTO.getDescripcion());

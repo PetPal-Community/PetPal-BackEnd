@@ -8,8 +8,10 @@ import com.ingsw.petpal.model.entity.Carer;
 import com.ingsw.petpal.model.entity.Mensajes;
 
 import com.ingsw.petpal.model.entity.User;
+import com.ingsw.petpal.model.entity.UserGeneral;
 import com.ingsw.petpal.repository.CarerRepository;
 import com.ingsw.petpal.repository.MensajesRepository;
+import com.ingsw.petpal.repository.UserGeneralRepository;
 import com.ingsw.petpal.repository.UserRepository;
 import com.ingsw.petpal.service.MensajesService;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +27,9 @@ public class MensajesImplementation implements MensajesService {
 
     private final MensajesRepository mensajesRepository;
     private final UserRepository userRepository;
-    private final CarerRepository cuidadorRepository;
+    private final CarerRepository carerRepository;
     private final MensajesMapper mensajesMapper;
+    private final UserGeneralRepository userGeneralRepository;
 
 
     @Transactional(readOnly = true)
@@ -42,8 +45,19 @@ public class MensajesImplementation implements MensajesService {
     @Transactional
     @Override
     public MensajeDetailsDTO create(MensajesCreateUpdateDTO mensajesCreateUpdateDTO) {
-        Carer carer = cuidadorRepository.findById(mensajesCreateUpdateDTO.getCuidador()).orElseThrow(() -> new ResourceNotFoundException("carer not found with id: " + mensajesCreateUpdateDTO.getCuidador()));
-        User user = userRepository.findById(mensajesCreateUpdateDTO.getUsuario()).orElseThrow(() -> new ResourceNotFoundException("user not found with id: " + mensajesCreateUpdateDTO.getUsuario()));
+        UserGeneral userGCarer = userGeneralRepository.findById(mensajesCreateUpdateDTO.getCuidadorGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + mensajesCreateUpdateDTO.getCuidadorGId()));
+        Integer userIDCarer = userGCarer.getCarer().getId();
+
+        Carer carer = carerRepository.findById(userIDCarer).orElseThrow(() -> new ResourceNotFoundException("carer not found with id: " + userIDCarer));
+
+
+        UserGeneral userG = userGeneralRepository.findById(mensajesCreateUpdateDTO.getUsuarioGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + mensajesCreateUpdateDTO.getUsuarioGId()));
+        Integer userID = userG.getUsuario().getId();
+
+        User user = userRepository.findById(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userID));
         Mensajes mensajes = mensajesMapper.toEntity(mensajesCreateUpdateDTO);
         mensajes.setFechaEnvio(LocalDateTime.from(LocalDateTime.now()));
         mensajes.setUsuario(user);
@@ -71,8 +85,19 @@ public class MensajesImplementation implements MensajesService {
     public MensajeDetailsDTO update(Integer id, MensajesCreateUpdateDTO updatedMensajes) {
         Mensajes mensajesFromDb = mensajesRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Mensaje found with id: " + id));
 
-        Carer carer = cuidadorRepository.findById(updatedMensajes.getCuidador()).orElseThrow(() -> new ResourceNotFoundException("carer not found with id: " + updatedMensajes.getCuidador()));
-        User user = userRepository.findById(updatedMensajes.getUsuario()).orElseThrow(() -> new ResourceNotFoundException("user not found with id: " + updatedMensajes.getUsuario()));
+        UserGeneral userGCarer = userGeneralRepository.findById(updatedMensajes.getCuidadorGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + updatedMensajes.getCuidadorGId()));
+        Integer userIDCarer = userGCarer.getCarer().getId();
+
+        Carer carer = carerRepository.findById(userIDCarer).orElseThrow(() -> new ResourceNotFoundException("carer not found with id: " + userIDCarer));
+
+
+        UserGeneral userG = userGeneralRepository.findById(updatedMensajes.getUsuarioGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + updatedMensajes.getUsuarioGId()));
+        Integer userID = userG.getUsuario().getId();
+
+        User user = userRepository.findById(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userID));
 
         mensajesFromDb.setCuidador(carer);
         mensajesFromDb.setUsuario(user);

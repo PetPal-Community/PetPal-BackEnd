@@ -20,10 +20,10 @@ public class ReviewDTO {
     private LocalDateTime fechaCreacion;
 
     @NotNull(message = "Usuario es obligatorio")
-    private Integer usuario;
+    private Integer usuarioGId;
 
     @NotNull(message = "Cuidador es obligatorio")
-    private Integer cuidador;
+    private Integer cuidadorGId;
 
 
 }

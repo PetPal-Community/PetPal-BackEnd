@@ -24,9 +24,9 @@ public class ContratsCreateUpdateDTO {
     private Integer servicio;
 
     @NotNull(message = "usuario es obligatorio")
-    private Integer usuario;
+    private Integer usuarioGId;
 
     @NotNull(message = "cuidador es obligatorio")
-    private Integer cuidador;
+    private Integer cuidadorGId;
 
 }

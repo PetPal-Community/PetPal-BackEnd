@@ -20,7 +20,7 @@ public class MedicVisitMapper {
     public MedicVisitDetailsDTO toDetailsDTO(MedicVisit medicVisit) {
         MedicVisitDetailsDTO detailsDTO = modelMapper.map(medicVisit, MedicVisitDetailsDTO.class);
         if (medicVisit.getMascota() != null) {
-            detailsDTO.setMascotaId(medicVisit.getMascota().getId());
+            detailsDTO.setNombreMascota(medicVisit.getMascota().getNombre());
         }
         return detailsDTO;
     }

@@ -16,8 +16,7 @@ public class CommunityDTO {
     @Size(max = 255, message = "La descripción debe tener 255 caracteres o menos")
     private String descripcion;
 
-
     //
     @NotNull(message = "El ID del creador es obligatorio")
-    private Integer creadorId; // Añadir el ID del creador
+    private Integer creadorGId; // Añadir el ID del creador
 }

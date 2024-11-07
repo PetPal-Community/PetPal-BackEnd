@@ -19,7 +19,6 @@ public class Community {
 
     private String descripcion;
 
-    private Integer creadorId;
     /*
     // USUARIO COMUNIDAD
     @ManyToOne

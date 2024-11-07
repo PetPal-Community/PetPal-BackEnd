@@ -20,7 +20,7 @@ public class ComentsCreateUpdateDTO {
     private LocalDateTime fechaupdate;
 
     @NotNull(message = "Usuario Debe existir")
-    private Integer usuario;
+    private Integer usuarioGId;
 
     @NotNull(message = "publicacion Debe existir")
     private Integer publicacion;

@@ -17,7 +17,14 @@ import java.util.List;
 @RequestMapping("/pets")
 @PreAuthorize("hasAnyRole('ADMIN','CUSTOMER')")
 public class PetController {
+
     private final PetService petService;
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<PetDetailsDTO>> getPetsbyUserGId(@PathVariable("id") Integer id) {
+        List<PetDetailsDTO> pets = petService.findAllByUserId(id);
+        return new ResponseEntity<>(pets, HttpStatus.OK);
+    }
 
     @GetMapping
     public ResponseEntity<List<PetDetailsDTO>> getAllPets() {

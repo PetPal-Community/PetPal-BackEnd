@@ -6,7 +6,9 @@ import com.ingsw.petpal.exception.ResourceNotFoundException;
 import com.ingsw.petpal.mapper.PetMapper;
 import com.ingsw.petpal.model.entity.Pet;
 import com.ingsw.petpal.model.entity.User;
+import com.ingsw.petpal.model.entity.UserGeneral;
 import com.ingsw.petpal.repository.PetRepository;
+import com.ingsw.petpal.repository.UserGeneralRepository;
 import com.ingsw.petpal.repository.UserRepository;
 import com.ingsw.petpal.service.PetService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +23,28 @@ public class PetServiceImpl implements PetService {
 
     private final PetRepository petRepository;
     private final UserRepository userRepository;
+    private final UserGeneralRepository userGeneralRepository;
     private final PetMapper petMapper;
+
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<PetDetailsDTO> findAllByUserId(Integer userId) {
+        // Verifica que el usuario existe antes de buscar sus mascotas
+        UserGeneral userG = userGeneralRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + userId));
+        Integer userID = userG.getUsuario().getId();
+
+        User user = userRepository.findById(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userID));
+
+
+        List<Pet> pets = petRepository.findByUsuario(user);
+        return pets.stream()
+                .map(petMapper::toDetailsDTO)
+                .toList();
+    }
+
 
     @Transactional(readOnly = true)
     @Override
@@ -35,8 +58,12 @@ public class PetServiceImpl implements PetService {
     @Transactional
     @Override
     public PetDetailsDTO create(PetCreateUpdateDTO petCreateUpdateDTO) {
-        User user = userRepository.findById(petCreateUpdateDTO.getUsuarioId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + petCreateUpdateDTO.getUsuarioId()));
+        UserGeneral userG = userGeneralRepository.findById(petCreateUpdateDTO.getUsuarioGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + petCreateUpdateDTO.getUsuarioGId()));
+        Integer userID = userG.getUsuario().getId();
+
+        User user = userRepository.findById(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userID));
 
         Pet pet = petMapper.toEntity(petCreateUpdateDTO);
         pet.setUsuario(user);  // Aquí se establece la relación con el usuario
@@ -59,8 +86,12 @@ public class PetServiceImpl implements PetService {
         Pet petFromDb = petRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Mascota no encontrada con id: " + id));
 
-        User user = userRepository.findById(updatedPet.getUsuarioId())
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + updatedPet.getUsuarioId()));
+        UserGeneral userG = userGeneralRepository.findById(updatedPet.getUsuarioGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + updatedPet.getUsuarioGId()));
+        Integer userID = userG.getUsuario().getId();
+
+        User user = userRepository.findById(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userID));
 
         petFromDb.setNombre(updatedPet.getNombre());
         petFromDb.setRaza(updatedPet.getRaza());

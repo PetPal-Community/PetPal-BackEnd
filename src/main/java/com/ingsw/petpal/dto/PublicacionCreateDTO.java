@@ -17,8 +17,8 @@ public class PublicacionCreateDTO {
 
     private LocalDateTime fechaActualización;
 
-    @NotBlank(message = "Usuario es obligatorio")
-    private Integer usuario;
+    @NotNull(message = "Usuario es obligatorio")
+    private Integer usuarioGId;
 
     private Integer comunidad;
 }

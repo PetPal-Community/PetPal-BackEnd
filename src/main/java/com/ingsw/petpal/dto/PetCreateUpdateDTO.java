@@ -29,5 +29,5 @@ public class PetCreateUpdateDTO {
     private String especie;
 
     @NotNull(message = "El usuario es obligatorio")
-    private Integer UsuarioId; // Este campo representa el ID del usuario propietario
+    private Integer UsuarioGId; // Este campo representa el ID del usuario propietario
 }

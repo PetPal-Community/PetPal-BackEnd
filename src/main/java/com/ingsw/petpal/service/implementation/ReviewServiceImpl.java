@@ -6,12 +6,10 @@ import com.ingsw.petpal.dto.ReviewDTO;
 import com.ingsw.petpal.dto.ReviewDetailsDTO;
 import com.ingsw.petpal.exception.ResourceNotFoundException;
 import com.ingsw.petpal.mapper.ReviewMapper;
-import com.ingsw.petpal.model.entity.Carer;
-import com.ingsw.petpal.model.entity.Mensajes;
-import com.ingsw.petpal.model.entity.Review;
-import com.ingsw.petpal.model.entity.User;
+import com.ingsw.petpal.model.entity.*;
 import com.ingsw.petpal.repository.CarerRepository;
 import com.ingsw.petpal.repository.ReviewRepository;
+import com.ingsw.petpal.repository.UserGeneralRepository;
 import com.ingsw.petpal.repository.UserRepository;
 import com.ingsw.petpal.service.ReviewService;
 
@@ -28,6 +26,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         private final ReviewRepository reviewRepository;
         private final ReviewMapper reviewMapper;
+        private final UserGeneralRepository userGeneralRepository;
         private final UserRepository userRepository;
         private final CarerRepository carerRepository;
 
@@ -51,8 +50,19 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     @Override
     public ReviewDetailsDTO create(ReviewDTO reviewDTO) {
-        Carer carer = carerRepository.findById(reviewDTO.getCuidador()).orElseThrow(() -> new ResourceNotFoundException("carer not found with id: " + reviewDTO.getCuidador()));
-        User user = userRepository.findById(reviewDTO.getUsuario()).orElseThrow(() -> new ResourceNotFoundException("user not found with id: " + reviewDTO.getUsuario()));
+        UserGeneral userGCarer = userGeneralRepository.findById(reviewDTO.getCuidadorGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + reviewDTO.getCuidadorGId()));
+        Integer userIDCarer = userGCarer.getCarer().getId();
+
+        Carer carer = carerRepository.findById(userIDCarer).orElseThrow(() -> new ResourceNotFoundException("carer not found with id: " + userIDCarer));
+
+
+        UserGeneral userG = userGeneralRepository.findById(reviewDTO.getUsuarioGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + reviewDTO.getUsuarioGId()));
+        Integer userID = userG.getUsuario().getId();
+
+        User user = userRepository.findById(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userID));
         Review review = reviewMapper.toEntity(reviewDTO);
         review.setFechaCreacion(LocalDateTime.from(LocalDateTime.now()));
         review.setUsuario(user);
@@ -66,8 +76,19 @@ public class ReviewServiceImpl implements ReviewService {
         Review reviewfromdb = reviewRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Resenia no encontrado con id " + id));
 
-        Carer carer = carerRepository.findById(updatedreviews.getCuidador()).orElseThrow(() -> new ResourceNotFoundException("carer not found with id: " + updatedreviews.getCuidador()));
-        User user = userRepository.findById(updatedreviews.getUsuario()).orElseThrow(() -> new ResourceNotFoundException("user not found with id: " + updatedreviews.getUsuario()));
+        UserGeneral userGCarer = userGeneralRepository.findById(updatedreviews.getCuidadorGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + updatedreviews.getCuidadorGId()));
+        Integer userIDCarer = userGCarer.getCarer().getId();
+
+        Carer carer = carerRepository.findById(userIDCarer).orElseThrow(() -> new ResourceNotFoundException("carer not found with id: " + userIDCarer));
+
+
+        UserGeneral userG = userGeneralRepository.findById(updatedreviews.getUsuarioGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + updatedreviews.getUsuarioGId()));
+        Integer userID = userG.getUsuario().getId();
+
+        User user = userRepository.findById(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userID));
 
         reviewfromdb.setFechaCreacion(LocalDateTime.from(LocalDateTime.now()));
         reviewfromdb.setUsuario(user);

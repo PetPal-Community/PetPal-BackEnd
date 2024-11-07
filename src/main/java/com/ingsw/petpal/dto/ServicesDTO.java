@@ -24,5 +24,5 @@ public class ServicesDTO {
     private BigDecimal precio;
 
     @NotNull(message = "Cuidador es obligatorio")
-    private Integer cuidador;
+    private Integer cuidadorGId;
 }

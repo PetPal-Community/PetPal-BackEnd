@@ -72,6 +72,7 @@ public class UserGeneralServiceImpl implements UserGeneralService {
         user.setNombre(userGeneralRegistration.getNombre());
         user.setApellido(userGeneralRegistration.getApellido());
         user.setTelefono(userGeneralRegistration.getTelefono());
+        user.setPicRuta(userGeneralRegistration.getPicRuta());
         user.setUser(userGeneral);
         userGeneral.setUsuario(user);
         }
@@ -80,6 +81,7 @@ public class UserGeneralServiceImpl implements UserGeneralService {
             carer.setNombre(userGeneralRegistration.getNombre());
             carer.setApellido(userGeneralRegistration.getApellido());
             carer.setTelefono(userGeneralRegistration.getTelefono());
+            carer.setPicRuta(userGeneralRegistration.getPicRuta());
             carer.setUser(userGeneral);
             userGeneral.setCarer(carer);
         }
@@ -127,12 +129,14 @@ public class UserGeneralServiceImpl implements UserGeneralService {
             userGeneral.getUsuario().setNombre(userGeneralProfileDTO.getNombre());
             userGeneral.getUsuario().setApellido(userGeneralProfileDTO.getApellido());
             userGeneral.getUsuario().setTelefono(userGeneralProfileDTO.getTelefono());
+            userGeneral.getUsuario().setPicRuta(userGeneralProfileDTO.getPicRuta());
         }
 
         if(userGeneral.getCarer()!= null){
             userGeneral.getCarer().setNombre(userGeneralProfileDTO.getNombre());
             userGeneral.getCarer().setApellido(userGeneralProfileDTO.getApellido());
             userGeneral.getCarer().setTelefono(userGeneralProfileDTO.getTelefono());
+            userGeneral.getCarer().setPicRuta(userGeneralProfileDTO.getPicRuta());
         }
         UserGeneral updatedUserGeneral = userGeneralRepository.save(userGeneral);
         return userGeneralMapper.toDTO(updatedUserGeneral);

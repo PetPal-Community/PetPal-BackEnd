@@ -1,6 +1,7 @@
 package com.ingsw.petpal.controller;
 
 import com.ingsw.petpal.dto.CommunityDTO;
+import com.ingsw.petpal.dto.CommunityDetailsDTO;
 import com.ingsw.petpal.model.entity.Community;
 import com.ingsw.petpal.service.ComunityService;
 import jakarta.validation.Valid;
@@ -21,26 +22,26 @@ public class ComunityController {
     private final ComunityService comunidadService;
 
     @GetMapping
-    public ResponseEntity<List<CommunityDTO>> getAllComunidades() {
-        List<CommunityDTO> comunidades = comunidadService.getAll();
+    public ResponseEntity<List<CommunityDetailsDTO>> getAllComunidades() {
+        List<CommunityDetailsDTO> comunidades = comunidadService.getAll();
         return new ResponseEntity<>(comunidades, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CommunityDTO> getComunidadById(@PathVariable("id") Integer id) {
-        CommunityDTO comunidad = comunidadService.findById(id);
+    public ResponseEntity<CommunityDetailsDTO> getComunidadById(@PathVariable("id") Integer id) {
+        CommunityDetailsDTO comunidad = comunidadService.findById(id);
         return new ResponseEntity<>(comunidad, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<CommunityDTO> createComunidad(@Valid @RequestBody CommunityDTO comunidadDTO) {
-        CommunityDTO createdComunidad = comunidadService.create(comunidadDTO);
+    public ResponseEntity<CommunityDetailsDTO> createComunidad(@Valid @RequestBody CommunityDTO comunidadDTO) {
+        CommunityDetailsDTO createdComunidad = comunidadService.create(comunidadDTO);
         return new ResponseEntity<>(createdComunidad, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommunityDTO> updateComunidad(@PathVariable("id") Integer id, @Valid @RequestBody CommunityDTO comunidadDTO) {
-        CommunityDTO updatedComunidad = comunidadService.update(id, comunidadDTO);
+    public ResponseEntity<CommunityDetailsDTO> updateComunidad(@PathVariable("id") Integer id, @Valid @RequestBody CommunityDTO comunidadDTO) {
+        CommunityDetailsDTO updatedComunidad = comunidadService.update(id, comunidadDTO);
         return new ResponseEntity<>(updatedComunidad, HttpStatus.OK);
     }
 

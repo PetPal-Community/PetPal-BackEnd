@@ -16,5 +16,5 @@ public class PetDetailsDTO {
 
     private String especie;
 
-    private String usuarioId; // Puedes considerar incluir el nombre o email del usuario, dependiendo de tus necesidades
+    private String usuarioNombre; // Puedes considerar incluir el nombre o email del usuario, dependiendo de tus necesidades
 }

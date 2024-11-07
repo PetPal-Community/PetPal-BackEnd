@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface PetService {
+    List<PetDetailsDTO> findAllByUserId(Integer userId);
     List<PetDetailsDTO> findAll();
 
     PetDetailsDTO create(PetCreateUpdateDTO pet);

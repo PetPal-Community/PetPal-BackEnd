@@ -10,6 +10,7 @@ import com.ingsw.petpal.mapper.CommentsMapper;
 import com.ingsw.petpal.model.entity.*;
 
 import com.ingsw.petpal.repository.PublicacionesRepository;
+import com.ingsw.petpal.repository.UserGeneralRepository;
 import com.ingsw.petpal.repository.UserRepository;
 import com.ingsw.petpal.repository.comentsRepository;
 import com.ingsw.petpal.service.ComentsService;
@@ -29,6 +30,7 @@ public class ComentsServiceImpl implements ComentsService {
     private final PublicacionesRepository publicacionesRepository;
     private final comentsRepository cOmentsRepository;
     private final CommentsMapper comentsMapper;
+    private final UserGeneralRepository userGeneralRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -42,7 +44,15 @@ public class ComentsServiceImpl implements ComentsService {
     @Transactional
     @Override
     public ComentsDetailsDTO create(ComentsCreateUpdateDTO comentsCreateUpdateDTO) {
-        User usuario = userRepository.findById(comentsCreateUpdateDTO.getUsuario()).orElseThrow(() -> new ResourceNotFoundException("usuario not found with id: " + comentsCreateUpdateDTO.getUsuario()));
+
+        UserGeneral userG = userGeneralRepository.findById(comentsCreateUpdateDTO.getUsuarioGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + comentsCreateUpdateDTO.getUsuarioGId()));
+        Integer userID = userG.getUsuario().getId();
+
+        User usuario = userRepository.findById(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userID));
+
+
         Publicaciones publicacion = publicacionesRepository.findById(comentsCreateUpdateDTO.getPublicacion()).orElseThrow(()-> new ResourceNotFoundException("Publicacion not found with id: " + comentsCreateUpdateDTO.getPublicacion()));
         coments comentarios = comentsMapper.toEntity(comentsCreateUpdateDTO);
         comentarios.setPublicacion(publicacion);
@@ -62,7 +72,15 @@ public class ComentsServiceImpl implements ComentsService {
     @Override
     public ComentsDetailsDTO update(Integer id, ComentsCreateUpdateDTO comentsCreateUpdateDTO) {
         coments comentFromDb = cOmentsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("comentario not found with id: " + id));
-        User usuario = userRepository.findById(comentsCreateUpdateDTO.getUsuario()).orElseThrow(() -> new ResourceNotFoundException("usuario not found with id: " + comentsCreateUpdateDTO.getUsuario()));
+
+        UserGeneral userG = userGeneralRepository.findById(comentsCreateUpdateDTO.getUsuarioGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + comentsCreateUpdateDTO.getUsuarioGId()));
+        Integer userID = userG.getUsuario().getId();
+
+        User usuario = userRepository.findById(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userID));
+
+
         Publicaciones publicacion = publicacionesRepository.findById(comentsCreateUpdateDTO.getPublicacion()).orElseThrow(()-> new ResourceNotFoundException("Publicacion not found with id: " + comentsCreateUpdateDTO.getPublicacion()));
 
         comentFromDb.setPublicacion(publicacion);

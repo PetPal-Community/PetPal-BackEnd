@@ -25,12 +25,14 @@ public class UserGeneralMapper {
             userGeneralProfileDTO.setNombre(user.getUsuario().getNombre());
             userGeneralProfileDTO.setApellido(user.getUsuario().getApellido());
             userGeneralProfileDTO.setTelefono(user.getUsuario().getTelefono());
+            userGeneralProfileDTO.setPicRuta(user.getUsuario().getPicRuta());
 
         }
         else if (user.getCarer() != null){
             userGeneralProfileDTO.setNombre(user.getCarer().getNombre());
             userGeneralProfileDTO.setApellido(user.getCarer().getApellido());
             userGeneralProfileDTO.setTelefono(user.getCarer().getTelefono());
+            userGeneralProfileDTO.setPicRuta(user.getCarer().getPicRuta());
 
         }
         userGeneralProfileDTO.setRol(user.getRole().getName());

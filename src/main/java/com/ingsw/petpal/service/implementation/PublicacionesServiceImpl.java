@@ -9,8 +9,10 @@ import com.ingsw.petpal.model.entity.Community;
 import com.ingsw.petpal.model.entity.Publicaciones;
 
 import com.ingsw.petpal.model.entity.User;
+import com.ingsw.petpal.model.entity.UserGeneral;
 import com.ingsw.petpal.repository.ComunityRepository;
 import com.ingsw.petpal.repository.PublicacionesRepository;
+import com.ingsw.petpal.repository.UserGeneralRepository;
 import com.ingsw.petpal.repository.UserRepository;
 import com.ingsw.petpal.service.PublicacionesService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class PublicacionesServiceImpl implements PublicacionesService {
     private final UserRepository userRepository;
     private final PublicacionMapper publicacionMapper;
     private final ComunityRepository comunityRepository;
+    private final UserGeneralRepository userGeneralRepository;
 
 
     @Transactional(readOnly = true)
@@ -42,12 +45,20 @@ public class PublicacionesServiceImpl implements PublicacionesService {
     @Override
     public PublicacionDetailsDTO create(PublicacionCreateDTO publicacionesDTO) {
         Publicaciones publicacion = publicacionMapper.toEntity(publicacionesDTO);
-        User usuario = userRepository.findById(publicacionesDTO.getUsuario()).orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado " + publicacionesDTO.getUsuario()));
+
+        UserGeneral userG = userGeneralRepository.findById(publicacionesDTO.getUsuarioGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + publicacionesDTO.getUsuarioGId()));
+        Integer userID = userG.getUsuario().getId();
+
+        User user = userRepository.findById(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userID));
+
+
         if (publicacionesDTO.getComunidad() != null) {
             Community comunidad = comunityRepository.findById(publicacionesDTO.getComunidad()).orElseThrow(()-> new ResourceNotFoundException("Comunidad no encontrado " + publicacionesDTO.getComunidad()));
             publicacion.setComunidad(comunidad);
         }
-        publicacion.setUsuario(usuario);
+        publicacion.setUsuario(user);
         publicacion.setFechaPublicacion(LocalDateTime.now());
 
         return publicacionMapper.toDetailsDTO(publicacionesRepository.save(publicacion));
@@ -64,13 +75,18 @@ public class PublicacionesServiceImpl implements PublicacionesService {
     @Transactional
     @Override
     public PublicacionDetailsDTO update(Integer id, PublicacionCreateDTO updatePublicaciones) {
-        User usuario = userRepository.findById(updatePublicaciones.getUsuario()).orElseThrow(()->new ResourceNotFoundException("Usuario no encontrado " + updatePublicaciones.getUsuario()));
+        UserGeneral userG = userGeneralRepository.findById(updatePublicaciones.getUsuarioGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + updatePublicaciones.getUsuarioGId()));
+        Integer userID = userG.getUsuario().getId();
+
+        User user = userRepository.findById(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userID));
         Publicaciones publicacionFromDB = publicacionesRepository.findById(updatePublicaciones.getId()).orElseThrow(()-> new ResourceNotFoundException("publicacion no encontrada con el id: " + id));
         if (updatePublicaciones.getComunidad() != null) {
             Community comunidad = comunityRepository.findById(updatePublicaciones.getComunidad()).orElseThrow(()-> new ResourceNotFoundException("Comunidad no encontrado " + updatePublicaciones.getComunidad()));
             publicacionFromDB.setComunidad(comunidad);
         }
-        publicacionFromDB.setUsuario(usuario);
+        publicacionFromDB.setUsuario(user);
         publicacionFromDB.setContenido(updatePublicaciones.getContenido());
         publicacionFromDB.setFechaActualización(LocalDateTime.now());
         publicacionFromDB.setPicRuta(updatePublicaciones.getPicRuta());

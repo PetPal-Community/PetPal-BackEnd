@@ -10,4 +10,5 @@ public class UserGeneralProfileDTO {
     private String telefono;
     private String email;
     private ERoles rol;
+    private String picRuta;
 }

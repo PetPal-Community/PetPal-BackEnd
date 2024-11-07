@@ -6,10 +6,7 @@ import com.ingsw.petpal.exception.ResourceNotFoundException;
 import com.ingsw.petpal.mapper.ContratsMapper;
 
 import com.ingsw.petpal.model.entity.*;
-import com.ingsw.petpal.repository.CarerRepository;
-import com.ingsw.petpal.repository.ContratsRepository;
-import com.ingsw.petpal.repository.ServicesRepository;
-import com.ingsw.petpal.repository.UserRepository;
+import com.ingsw.petpal.repository.*;
 import com.ingsw.petpal.service.ContratsService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,6 +24,7 @@ public class ContratsServiceImpl implements ContratsService {
     private final CarerRepository carerRepository;
     private final UserRepository userRepository;
     private final ContratsMapper contratsMapper;
+    private final UserGeneralRepository userGeneralRepository;
 
 
     @Transactional(readOnly = true)
@@ -42,8 +40,23 @@ public class ContratsServiceImpl implements ContratsService {
     @Override
     public ContratoDetailsDTO create(ContratsCreateUpdateDTO contratsCreateUpdateDTO) {
         Services services = servicesRepository.findById(contratsCreateUpdateDTO.getServicio()).orElseThrow(() ->new ResourceNotFoundException("services not found with id: " + contratsCreateUpdateDTO.getServicio()));
-        Carer carer = carerRepository.findById(contratsCreateUpdateDTO.getCuidador()).orElseThrow(() -> new ResourceNotFoundException("carer not found with id: " + contratsCreateUpdateDTO.getCuidador()));
-        User user = userRepository.findById(contratsCreateUpdateDTO.getUsuario()).orElseThrow(() -> new ResourceNotFoundException("user not found with id: " + contratsCreateUpdateDTO.getUsuario()));
+
+        UserGeneral userGCarer = userGeneralRepository.findById(contratsCreateUpdateDTO.getCuidadorGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + contratsCreateUpdateDTO.getCuidadorGId()));
+        Integer userIDCarer = userGCarer.getCarer().getId();
+
+        Carer carer = carerRepository.findById(userIDCarer).orElseThrow(() -> new ResourceNotFoundException("carer not found with id: " + userIDCarer));
+
+
+        UserGeneral userG = userGeneralRepository.findById(contratsCreateUpdateDTO.getUsuarioGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + contratsCreateUpdateDTO.getUsuarioGId()));
+        Integer userID = userG.getUsuario().getId();
+
+        User user = userRepository.findById(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userID));
+
+
+
         Contrats contrats =  contratsMapper.toEntity(contratsCreateUpdateDTO);
         contrats.setDuracionContrato(contratsCreateUpdateDTO.getDuracionContrato());
         contrats.setEstado(contratsCreateUpdateDTO.getEstado());
@@ -73,8 +86,19 @@ public class ContratsServiceImpl implements ContratsService {
         Contrats contratsFromDb =contratsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("contrat not found with id: " + id));
 
         Services services = servicesRepository.findById(updatedContrats.getServicio()).orElseThrow(() ->new ResourceNotFoundException("services not found with id: " + updatedContrats.getServicio()));
-        Carer carer = carerRepository.findById(updatedContrats.getCuidador()).orElseThrow(() -> new ResourceNotFoundException("carer not found with id: " + updatedContrats.getCuidador()));
-        User user = userRepository.findById(updatedContrats.getUsuario()).orElseThrow(() -> new ResourceNotFoundException("user not found with id: " + updatedContrats.getUsuario()));
+        UserGeneral userGCarer = userGeneralRepository.findById(updatedContrats.getCuidadorGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + updatedContrats.getCuidadorGId()));
+        Integer userIDCarer = userGCarer.getCarer().getId();
+
+        Carer carer = carerRepository.findById(userIDCarer).orElseThrow(() -> new ResourceNotFoundException("carer not found with id: " + userIDCarer));
+
+
+        UserGeneral userG = userGeneralRepository.findById(updatedContrats.getUsuarioGId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + updatedContrats.getUsuarioGId()));
+        Integer userID = userG.getUsuario().getId();
+
+        User user = userRepository.findById(userID)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userID));
 
 
         contratsFromDb.setServicio(services);

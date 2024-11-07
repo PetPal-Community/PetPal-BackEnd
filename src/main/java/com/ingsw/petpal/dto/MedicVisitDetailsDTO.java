@@ -9,5 +9,5 @@ public class MedicVisitDetailsDTO {
     private Integer id;
     private String diagnostico;
     private LocalDate fechaVisita;
-    private Integer mascotaId; // Clave foránea para la mascota asociada
+    private String  nombreMascota; // Clave foránea para la mascota asociada
 }
