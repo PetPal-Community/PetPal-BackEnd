@@ -44,10 +44,11 @@ public class UserGeneralMapper {
     public AuthResponseDTO toAuthResponseDTO(UserGeneral user, String token) {
         AuthResponseDTO authResponseDTO = new AuthResponseDTO();
         authResponseDTO.setToken(token); // Asignar el token
-
+        authResponseDTO.setId(user.getId());
 
         // Si es cliente, asignar los datos de cliente
         if (user.getUsuario() != null) {
+
             authResponseDTO.setNombre(user.getUsuario().getNombre());
             authResponseDTO.setApellido(user.getUsuario().getApellido());
         }

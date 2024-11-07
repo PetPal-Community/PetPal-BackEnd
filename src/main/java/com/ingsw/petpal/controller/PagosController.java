@@ -1,6 +1,7 @@
 package com.ingsw.petpal.controller;
 
 import com.ingsw.petpal.dto.PagosDTO;
+import com.ingsw.petpal.dto.PagosDetails;
 import com.ingsw.petpal.service.PagosService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,26 +23,26 @@ public class PagosController {
     private final PagosService pagosService;
 
     @GetMapping
-    public ResponseEntity<List<PagosDTO>> getAllPagos() {
-        List<PagosDTO> pagosList = pagosService.getAll();
+    public ResponseEntity<List<PagosDetails>> getAllPagos() {
+        List<PagosDetails> pagosList = pagosService.getAll();
         return new ResponseEntity<>(pagosList, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PagosDTO> getPagoById(@PathVariable("id") Integer id) {
-        PagosDTO pagosDTO = pagosService.findById(id);
+    public ResponseEntity<PagosDetails> getPagoById(@PathVariable("id") Integer id) {
+        PagosDetails pagosDTO = pagosService.findById(id);
         return new ResponseEntity<>(pagosDTO, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<PagosDTO> createPago(@Valid @RequestBody PagosDTO pagosDTO) {
-        PagosDTO createdPago = pagosService.create(pagosDTO);
+    public ResponseEntity<PagosDetails> createPago(@Valid @RequestBody PagosDTO pagosDTO) {
+        PagosDetails createdPago = pagosService.create(pagosDTO);
         return new ResponseEntity<>(createdPago, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PagosDTO> updatePago(@PathVariable("id") Integer id, @Valid @RequestBody PagosDTO pagosDTO) {
-        PagosDTO updatedPago = pagosService.update(id, pagosDTO);
+    public ResponseEntity<PagosDetails> updatePago(@PathVariable("id") Integer id, @Valid @RequestBody PagosDTO pagosDTO) {
+        PagosDetails updatedPago = pagosService.update(id, pagosDTO);
         return new ResponseEntity<>(updatedPago, HttpStatus.OK);
     }
 

@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class CarerDTO {
 
+    private String picRuta;
     private Integer id;
 
     @NotBlank(message = "El nombre es obligatorio")
@@ -19,15 +20,10 @@ public class CarerDTO {
     @Size(min = 3, max = 20, message = "apellido debe ser de 3 a 20 caracteres")
     private String apellido;
 
-    @NotBlank(message="email es obligatorio")
-    @Email(message = "El formato debe ser de email")
-    private String email;
 
     @NotBlank
     @Pattern(regexp = "\\d+", message = "El teléfono debe contener solo números.")
     private String telefono;
 
-    @NotBlank
-    @Size(min = 8, max = 20)
-    private String contrasenia;
+
 }

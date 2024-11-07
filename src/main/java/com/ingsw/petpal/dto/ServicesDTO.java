@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class ServicesDTO {
 
     private Integer id;
-
+    private String picRuta;
     @NotBlank(message = "El Tipo de servicio es obligatorio")
     @Size(min = 5, max = 50)
     private String tipo_servicio;

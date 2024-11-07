@@ -13,7 +13,7 @@ public class ContratoDetailsDTO {
 
     private Integer id;
 
-    private LocalDate fechaContratacion;
+    private String duracionContrato;
 
     private String estado;
 

@@ -11,8 +11,8 @@ public class ContratsCreateUpdateDTO {
 
     private Integer id;
 
-    @NotNull(message = "Fecha de contratación obligatoria")
-    private LocalDate fechaContratacion;
+    @NotBlank(message = "Fecha de contratación obligatoria")
+    private String duracionContrato;
 
     @NotBlank(message = "El estado es obligatorio")
     private String estado;

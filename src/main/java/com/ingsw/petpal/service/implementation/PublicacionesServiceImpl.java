@@ -73,6 +73,7 @@ public class PublicacionesServiceImpl implements PublicacionesService {
         publicacionFromDB.setUsuario(usuario);
         publicacionFromDB.setContenido(updatePublicaciones.getContenido());
         publicacionFromDB.setFechaActualización(LocalDateTime.now());
+        publicacionFromDB.setPicRuta(updatePublicaciones.getPicRuta());
 
         return publicacionMapper.toDetailsDTO(publicacionesRepository.save(publicacionFromDB));
     }

@@ -19,6 +19,7 @@ public class User  {
     private String apellido;
 
     private String telefono;
+    private String picRuta;
 
     // Asignacion de UserGeneral:
     @OneToOne

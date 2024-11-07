@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class PublicacionDetailsDTO {
     private Integer id;
     private String contenido;
-
+    private String picRuta;
     private LocalDateTime fechaPublicacion;
 
     private LocalDateTime fechaActualización;

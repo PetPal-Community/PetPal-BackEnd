@@ -74,6 +74,7 @@ public class UserServiceImpl implements UserService {
         usuarioFromDb.setApellido(updatedUsuarioDTO.getApellido());
         //usuarioFromDb.setEmail(updatedUsuarioDTO.getEmail());
         usuarioFromDb.setTelefono(updatedUsuarioDTO.getTelefono());
+        usuarioFromDb.setPicRuta(updatedUsuarioDTO.getPicRuta());
 
         // Guardar el usuario actualizado
         usuarioFromDb = usuarioRepository.save(usuarioFromDb);

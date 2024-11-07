@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/carer")
-@PreAuthorize("hasRole('ADMIN')")  // editar para que el carer pueda tener control para su perfil
+@PreAuthorize("hasAnyRole('ADMIN','CARER')")  // editar para que el carer pueda tener control para su perfil
 public class CarerController {
     private final CarerService carerService;
 

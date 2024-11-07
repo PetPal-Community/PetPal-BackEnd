@@ -50,5 +50,7 @@ public class EmailService {
         //helper.addAttachment("MyTestFile.txt", new ByteArrayResource("test".getBytes()));
 
         mailSender.send(message);
+
     }
+
 }

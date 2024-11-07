@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 public class ServicesDetailsDTO {
 
     private Integer id;
-
+    private String picRuta;
     private String tipo_servicio;
 
     private String descripcion;

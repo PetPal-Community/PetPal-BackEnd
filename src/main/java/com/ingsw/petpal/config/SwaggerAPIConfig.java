@@ -20,12 +20,20 @@ public class SwaggerAPIConfig {
     @Value("${petpal.openapi.dev-url}")
     private String devUrl;
 
+    @Value("${petpal.openapi.prod-url}")
+    private String prodUrl;
+
     @Bean
     public OpenAPI getOpenAPI() {
         // Definir el servidor de desarrollo
         Server devServer = new Server();
         devServer.setUrl(devUrl);
         devServer.setDescription("This is the Dev Server");
+
+        // Definir el servidor de desarrollo
+        Server prodServer = new Server();
+        prodServer.setUrl(prodUrl);
+        prodServer.setDescription("This is the Dev Server");
 
         // Informacion de Contacto
         Contact contact = new Contact();
@@ -63,7 +71,7 @@ public class SwaggerAPIConfig {
         return new OpenAPI()
                 .info(info)
                 //.addServersItem(devServer);
-                .servers(List.of(devServer))
+                .servers(List.of(devServer,prodServer))
                 .addSecurityItem(securityRequirement)
                 .components(components);
     }

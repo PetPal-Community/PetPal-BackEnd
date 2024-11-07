@@ -9,6 +9,8 @@ import lombok.Data;
 @Data
 public class UserGeneralRegistration {
     // Carer - User  : Attributes
+    private String picRuta;
+
     @NotBlank(message="El nombre es obligatorio")
     @Size(max=50, message="El nombre debe tener 50 caracteres o menos")
     private String nombre;

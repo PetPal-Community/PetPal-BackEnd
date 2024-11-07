@@ -21,6 +21,10 @@ public class Services {
 
     private BigDecimal precio;
 
+    private String picRuta;
+
+    //private String ImgUrl;
+
     @ManyToOne
     @JoinColumn(name = "cuidador_id",referencedColumnName = "id", foreignKey = @ForeignKey(name="fk_cuidador_servicio"))
     private Carer cuidador;

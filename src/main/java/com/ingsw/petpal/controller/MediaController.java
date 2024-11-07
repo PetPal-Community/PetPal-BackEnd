@@ -18,7 +18,7 @@ import java.nio.file.Files;
 @RequiredArgsConstructor
 @RequestMapping("/media")
 @RestController
-@PreAuthorize("hasAnyRole('ADMIN', 'AUTHOR')")  // Permitir solo a CUSTOMER y AUTHOR
+@PreAuthorize("hasAnyRole('ADMIN', 'AUTHOR','CUSTOMER')")  // Permitir solo a CUSTOMER y AUTHOR
 public class MediaController {
 
     private final StorageService storageService;
@@ -39,5 +39,16 @@ public class MediaController {
                 .header(HttpHeaders.CONTENT_TYPE, contentType)
                 .body(resource);
     }
+
+    @DeleteMapping("/{filename}")
+    public ResponseEntity<?> deleteFile(@PathVariable String filename) {
+        try {
+            storageService.delete(filename);
+            return ResponseEntity.ok().body("Archivo eliminado exitosamente.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(500).body("Error al eliminar el archivo: " + e.getMessage());
+        }
+    }
+
 
 }

@@ -61,7 +61,7 @@ public class WebSecurityConfig {
                         .requestMatchers(antMatcher("/authenticacion/registrar/carer")).permitAll()
                         .requestMatchers(antMatcher("/mail/**")).permitAll()
                         //.requestMatchers(antMatcher("/books/recent")).permitAll()
-                        .requestMatchers("/api/v2/swagger-ui/**", "/api/v2/**", "/swagger-ui.html", "/swagger-ui/**", "/webjars/**").permitAll()
+                        .requestMatchers("/api/v2/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/webjars/**").permitAll()
                         .requestMatchers("/swagger-ui/index.html").permitAll()
                         // TODO: Cualquier otra solicitud requiere autenticación (JWT u otra autenticación configurada)
                         .anyRequest().authenticated()

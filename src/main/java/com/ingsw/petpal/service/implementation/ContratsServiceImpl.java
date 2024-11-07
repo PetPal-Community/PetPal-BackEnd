@@ -45,7 +45,9 @@ public class ContratsServiceImpl implements ContratsService {
         Carer carer = carerRepository.findById(contratsCreateUpdateDTO.getCuidador()).orElseThrow(() -> new ResourceNotFoundException("carer not found with id: " + contratsCreateUpdateDTO.getCuidador()));
         User user = userRepository.findById(contratsCreateUpdateDTO.getUsuario()).orElseThrow(() -> new ResourceNotFoundException("user not found with id: " + contratsCreateUpdateDTO.getUsuario()));
         Contrats contrats =  contratsMapper.toEntity(contratsCreateUpdateDTO);
-
+        contrats.setDuracionContrato(contratsCreateUpdateDTO.getDuracionContrato());
+        contrats.setEstado(contratsCreateUpdateDTO.getEstado());
+        contrats.setDetalles(contratsCreateUpdateDTO.getDetalles());
         contrats.setServicio(services);
         contrats.setCuidador(carer);
         contrats.setUsuario(user);
@@ -78,7 +80,7 @@ public class ContratsServiceImpl implements ContratsService {
         contratsFromDb.setServicio(services);
         contratsFromDb.setCuidador(carer);
         contratsFromDb.setUsuario(user);
-        contratsFromDb.setFechaContratacion(updatedContrats.getFechaContratacion());
+        contratsFromDb.setDuracionContrato(updatedContrats.getDuracionContrato());
         contratsFromDb.setEstado(updatedContrats.getEstado());
         contratsFromDb.setDetalles(updatedContrats.getDetalles());
 

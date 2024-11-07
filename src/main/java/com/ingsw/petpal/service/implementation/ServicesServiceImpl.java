@@ -65,6 +65,7 @@ public class ServicesServiceImpl implements ServicesService {
         servicesfromdb.setTipo_servicio(updatedServicesDTO.getTipo_servicio());
         servicesfromdb.setDescripcion(updatedServicesDTO.getDescripcion());
         servicesfromdb.setPrecio(updatedServicesDTO.getPrecio());
+        servicesfromdb.setPicRuta(updatedServicesDTO.getPicRuta());
         return servicesMapper.toDetailsDTO(servicesRepository.save(servicesfromdb));
     }
 

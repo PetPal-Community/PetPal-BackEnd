@@ -24,6 +24,8 @@ public class Publicaciones implements Serializable {
 
     private LocalDateTime fechaActualización;
 
+    private String picRuta;
+
     // PUBLICACIONES CREADAS POR USUARIOS (NO NULLABLE)
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false, referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_usuario_publicacion"))

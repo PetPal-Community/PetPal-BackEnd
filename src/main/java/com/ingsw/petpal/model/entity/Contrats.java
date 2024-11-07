@@ -14,7 +14,8 @@ public class Contrats {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private LocalDate fechaContratacion;
+
+    private String duracionContrato;
 
     private String estado;
 

@@ -1,19 +1,20 @@
 package com.ingsw.petpal.service;
 
 import com.ingsw.petpal.dto.PagosDTO;
+import com.ingsw.petpal.dto.PagosDetails;
 
 import java.util.List;
 
 public interface PagosService {
-    List<PagosDTO> getAll();
+    List<PagosDetails> getAll();
 
-    PagosDTO findById(Integer id);
+    PagosDetails findById(Integer id);
 
-    PagosDTO create(PagosDTO pagosDTO);
+    PagosDetails create(PagosDTO pagosDTO);
 
-    PagosDTO update(Integer id, PagosDTO updatedPagosDTO);
+    PagosDetails update(Integer id, PagosDTO updatedPagosDTO);
 
     void delete(Integer id);
 
-    PagosDTO confirmPurchase(Integer pagosId);
+    PagosDetails confirmPurchase(Integer pagosId);
 }

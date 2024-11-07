@@ -21,6 +21,9 @@ public class Carer {
     private String apellido;
 
     private String telefono;
+
+    private String picRuta;
+
     // Asignacion de UserGeneral:
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

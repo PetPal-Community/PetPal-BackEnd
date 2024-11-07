@@ -1,11 +1,12 @@
 package com.ingsw.petpal.service;
 
-import com.ingsw.petpal.dto.likesPublicacionDTO;
+import com.ingsw.petpal.model.entity.User;
+import com.ingsw.petpal.model.entity.likesPublicacion;
 
 import java.util.List;
 
 public interface likesPublicacionService {
-    void darLike(likesPublicacionDTO likesPublicacionDTO);
-    void quitarLike(likesPublicacionDTO likesPublicacionDTO);
-    List<likesPublicacionDTO> obtenerTodosLosLikes();
+    likesPublicacion anadirLikeAPublicacion(Integer userID, Integer publicacionID);
+    void eliminarLikeAPublicacion(Integer userID, Integer publicacionID);
+    List<User> obtenerQuienesDieronLikeAPubli(Integer publicacionID);
 }

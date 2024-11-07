@@ -1,4 +1,4 @@
- #Usar una imagen base ligera de OpenJDK 21 para ejecutar aplicaciones Java
+#Usar una imagen base ligera de OpenJDK 21 para ejecutar aplicaciones Java
 FROM openjdk:21-jdk-slim
 # Define la variable del archivo JAR
 ARG JAR_FILE=target/PetPal-0.0.1.jar

@@ -1,81 +1,65 @@
 package com.ingsw.petpal.service.implementation;
 
-import com.ingsw.petpal.dto.likesPublicacionDTO;
+import com.ingsw.petpal.exception.BadRequestException;
 import com.ingsw.petpal.model.entity.likesPublicacion;
 import com.ingsw.petpal.model.entity.likesPublicacionFK;
 import com.ingsw.petpal.model.entity.Publicaciones;
 import com.ingsw.petpal.model.entity.User;
+import com.ingsw.petpal.repository.PublicacionesRepository;
 import com.ingsw.petpal.repository.likesPublicacionRepository;
 import com.ingsw.petpal.service.likesPublicacionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class likesPublicacionServiceImpl implements likesPublicacionService {
 
-    @Autowired
-    private likesPublicacionRepository likesPublicacionRepository;
+    private final likesPublicacionRepository likesPubliRepository;
+    private final PublicacionesRepository publicacionesRepository;
 
-    // Método para dar un like
     @Override
-    public void darLike(likesPublicacionDTO likesPublicacionDTO) {
-        likesPublicacion like = new likesPublicacion();
-        likesPublicacionFK pk = new likesPublicacionFK();
+    @Transactional
+    public likesPublicacion anadirLikeAPublicacion(Integer userID, Integer publicacionID){
+        if (likesPubliRepository.existsByUsuarioAndPublicacion(userID, publicacionID)) {
+            throw new BadRequestException("Este Usuario ya ha dado like a esta publicacion.");
+        }
 
-        User usuario = new User();
-        usuario.setId(likesPublicacionDTO.getUsuarioId());
+        // Establecer la fecha en que se agrega
+        LocalDateTime fechaCreada = LocalDateTime.now();
 
-        Publicaciones publicacion = new Publicaciones();
-        publicacion.setId(likesPublicacionDTO.getPublicacionId());
+        // Añadimos a la publi
+        likesPubliRepository.addLikesPublicacion(userID, publicacionID, fechaCreada);
 
-        pk.setUsuario(usuario);
-        pk.setPublicacion(publicacion);
-
-        like.setUsuario(usuario);
-        like.setPublicacion(publicacion);
-        like.setFecha(LocalDateTime.now());
-
-        likesPublicacionRepository.save(like);
+        // creamos el objeto a devolver
+        likesPublicacion likPublicacion = new likesPublicacion();
+        likPublicacion.setUsuario(userID);
+        likPublicacion.setPublicacion(publicacionID);
+        likPublicacion.setFecha(fechaCreada);
+        return likPublicacion;
     }
 
-    // Método para quitar un like
+
+
     @Override
-    public void quitarLike(likesPublicacionDTO likesPublicacionDTO) {
-        // Crear una instancia de likesPublicacionFK para buscar el like
-        likesPublicacionFK pk = new likesPublicacionFK();
-
-        User usuario = new User();
-        usuario.setId(likesPublicacionDTO.getUsuarioId());
-
-        Publicaciones publicacion = new Publicaciones();
-        publicacion.setId(likesPublicacionDTO.getPublicacionId());
-
-        pk.setUsuario(usuario);
-        pk.setPublicacion(publicacion);
-
-        // Eliminar el like correspondiente
-        likesPublicacionRepository.deleteById(pk);
+    @Transactional
+    public void eliminarLikeAPublicacion(Integer userID, Integer publicacionID){
+        likesPubliRepository.deleteByUsuarioAndPublicacion(userID, publicacionID);
     }
 
-    // Método para obtener todos los likes
     @Override
-    public List<likesPublicacionDTO> obtenerTodosLosLikes() {
-        List<likesPublicacion> likes = likesPublicacionRepository.findAll();
-        return likes.stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    public List<User> obtenerQuienesDieronLikeAPubli(Integer publicacionID){
+        Publicaciones publi = publicacionesRepository.findById(publicacionID)
+                .orElseThrow(() -> new RuntimeException("No se encontro la publi"));
+
+        return likesPubliRepository.findUsuariosByPublicacion(publi);
     }
 
-    // Método para convertir de entidad a DTO
-    private likesPublicacionDTO convertToDTO(likesPublicacion like) {
-        likesPublicacionDTO dto = new likesPublicacionDTO();
-        dto.setUsuarioId(like.getUsuario().getId());
-        dto.setPublicacionId(like.getPublicacion().getId());
-        dto.setFecha(like.getFecha());
-        return dto;
-    }
+
 }

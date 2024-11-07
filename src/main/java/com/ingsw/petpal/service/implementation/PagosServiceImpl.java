@@ -1,6 +1,7 @@
 package com.ingsw.petpal.service.implementation;
 
 import com.ingsw.petpal.dto.PagosDTO;
+import com.ingsw.petpal.dto.PagosDetails;
 import com.ingsw.petpal.exception.DuplicatePaymentException;
 import com.ingsw.petpal.exception.PaymentProcessingException;
 import com.ingsw.petpal.exception.ResourceNotFoundException;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -29,27 +31,28 @@ public class PagosServiceImpl implements PagosService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<PagosDTO> getAll() {
+    public List<PagosDetails> getAll() {
         List<Pagos> pagosList = pagosRepository.findAll();
-        return pagosList.stream().map(pagosMapper::toDTO).toList();
+        return pagosList.stream()
+                .map(pagosMapper::toDetailsDTO).toList();
     }
 
     @Transactional(readOnly = true)
     @Override
-    public PagosDTO findById(Integer id) {
+    public PagosDetails findById(Integer id) {
         Pagos pagos = pagosRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pago no encontrado"));
-        return pagosMapper.toDTO(pagos);
+        return pagosMapper.toDetailsDTO(pagos);
     }
 
     @Transactional
     @Override
-    public PagosDTO create(PagosDTO pagosDTO) {
-        // Verificar si ya existe un pago con el mismo método y estado
+    public PagosDetails create(PagosDTO pagosDTO) {
+        /*// Verificar si ya existe un pago con el mismo método y estado
         pagosRepository.findByMetodoPagoAndEstadoPago(pagosDTO.getMetodoPago(), pagosDTO.getEstadoPago())
                 .ifPresent(pago -> {
                     throw new DuplicatePaymentException("Ya existe un pago con el mismo método y estado");
                 });
-
+           */
 
         // Verificar si el contrato existe
         Contrats contrato = contratsRepository.findById(pagosDTO.getContratacionIdd())
@@ -58,9 +61,10 @@ public class PagosServiceImpl implements PagosService {
         // Mapear DTO a entidad
         Pagos pagos = pagosMapper.toEntity(pagosDTO);
         pagos.setEstadoPago(PaymentStatus.PENDING);
-        pagos.setContratacionIdd(contrato.getId());
+        pagos.setContrato(contrato);
         pagos.setValorPago(pagosDTO.getValorPago());
         pagos.setContrato(contrato);
+        pagos.setFechaPagoCreado(LocalDateTime.now());
         // Intentar guardar el pago
         try {
             pagos = pagosRepository.save(pagos);
@@ -68,21 +72,21 @@ public class PagosServiceImpl implements PagosService {
             throw new PaymentProcessingException("Error al procesar el pago: " + e.getMessage());
         }
 
-        return pagosMapper.toDTO(pagos);
+        return pagosMapper.toDetailsDTO(pagosRepository.save(pagos));
     }
 
     @Transactional
     @Override
-    public PagosDTO update(Integer id, PagosDTO updatedPagosDTO) {
+    public PagosDetails update(Integer id, PagosDTO updatedPagosDTO) {
         Pagos pagosFromDb = pagosRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pago no encontrado"));
 
         pagosFromDb.setMetodoPago(updatedPagosDTO.getMetodoPago());
         //pagosFromDb.setEstadoPago(updatedPagosDTO.getEstadoPago());
-        pagosFromDb.setEstadoPago(PaymentStatus.valueOf(updatedPagosDTO.getEstadoPago()));
-        pagosFromDb.setFechaPago(updatedPagosDTO.getFechaPago());
-
+        //pagosFromDb.setEstadoPago(PaymentStatus.valueOf(updatedPagosDTO.getEstadoPago()));
+        pagosFromDb.setValorPago(updatedPagosDTO.getValorPago());
+        pagosFromDb.setFechaPagoCreado(LocalDateTime.now());
         pagosFromDb = pagosRepository.save(pagosFromDb);
-        return pagosMapper.toDTO(pagosFromDb);
+        return pagosMapper.toDetailsDTO(pagosRepository.save(pagosFromDb));
     }
 
     @Transactional
@@ -93,7 +97,7 @@ public class PagosServiceImpl implements PagosService {
     }
 
     @Override
-    public PagosDTO confirmPurchase(Integer pagosId) {
+    public PagosDetails confirmPurchase(Integer pagosId) {
 
         // Obtener la entidad Invoice directamente desde el repositorio
         Pagos invoice = pagosRepository.findById(pagosId)
@@ -101,9 +105,10 @@ public class PagosServiceImpl implements PagosService {
 
         // Confirmar la compra: cambio de estado
         invoice.setEstadoPago(PaymentStatus.COMPLETED);
+        invoice.setFechaPagoPagado(LocalDateTime.now());
 
         // Guardar y retornar el DTO actualizado
         Pagos updatedInvoice = pagosRepository.save(invoice);
-        return pagosMapper.toDTO(updatedInvoice);
+        return pagosMapper.toDetailsDTO(updatedInvoice);
     }
 }

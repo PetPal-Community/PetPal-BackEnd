@@ -7,7 +7,7 @@ import lombok.Data;
 public class UsuarioDTO {
 
     private Integer id;
-
+    private String picRuta;
     @NotBlank(message="El nombre es obligatorio")
     @Size(max=50, message="El nombre debe tener 50 caracteres o menos")
     private String nombre;
@@ -20,12 +20,7 @@ public class UsuarioDTO {
     @Pattern(regexp = "\\d+", message = "El teléfono debe contener solo números.")
     private String telefono;
 
-    @NotBlank(message="email es obligatorio")
-    @Email(message = "El formato debe ser de email")
-    private String email;
 
-    @NotBlank(message = "La contraseña es obligatorio")
-    @Size(min = 4, message = "La contraseña debe tener al menos 4 caracteres")
-    private String password;
+
 
 }

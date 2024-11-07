@@ -23,14 +23,11 @@ public class Pagos {
     @Column(name = "estadoPago")
     private PaymentStatus estadoPago;
 
-    private LocalDateTime fechaPago;
+    private LocalDateTime fechaPagoPagado;
 
+    private LocalDateTime fechaPagoCreado;
 
     private BigDecimal valorPago;
-
-    // Corregir
-    private Integer contratacionIdd;
-
 
     @ManyToOne
     @JoinColumn(name="contratacion_id",referencedColumnName = "id", foreignKey = @ForeignKey(name="fk_contrato_pago"))
