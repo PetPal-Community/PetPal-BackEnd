@@ -4,10 +4,10 @@ import com.ingsw.petpal.dto.MedicVisitCreateUpdateDTO;
 import com.ingsw.petpal.dto.MedicVisitDetailsDTO;
 import com.ingsw.petpal.exception.ResourceNotFoundException;
 import com.ingsw.petpal.mapper.MedicVisitMapper;
-import com.ingsw.petpal.model.entity.MedicVisit;
-import com.ingsw.petpal.model.entity.Pet;
+import com.ingsw.petpal.model.entity.*;
 import com.ingsw.petpal.repository.MedicVisitRepository;
 import com.ingsw.petpal.repository.PetRepository;
+import com.ingsw.petpal.repository.UserGeneralRepository;
 import com.ingsw.petpal.service.MedicVisitService;
 import com.ingsw.petpal.service.PetService;
 import jakarta.persistence.ManyToOne;
@@ -24,6 +24,7 @@ public class MedicVisitServiceImpl implements MedicVisitService {
     private final MedicVisitRepository medicVisitRepository;
     private final MedicVisitMapper medicVisitMapper;
     private final PetRepository petRepository;
+    private final UserGeneralRepository userGeneralRepository;
 
     @Transactional(readOnly = true)
     @Override
@@ -71,5 +72,15 @@ public class MedicVisitServiceImpl implements MedicVisitService {
         MedicVisit medicVisit = medicVisitRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Medic visit not found with id: " + id));
         medicVisitRepository.delete(medicVisit);
+    }
+
+    @Transactional
+    @Override
+    public List<MedicVisitDetailsDTO> findMedicVisitByUser(Integer personaId) {
+        UserGeneral user = userGeneralRepository.findById(personaId).orElseThrow(() -> new ResourceNotFoundException("Usuario General no encontrada"));
+        List<MedicVisit> medic =  medicVisitRepository.findVisitasMedicasByPersonaId(personaId);
+        return medic.stream()
+                .map(medicVisitMapper::toDetailsDTO)
+                .toList();
     }
 }

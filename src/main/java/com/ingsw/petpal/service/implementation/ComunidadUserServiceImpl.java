@@ -40,5 +40,6 @@ public class ComunidadUserServiceImpl implements ComunidadUserService {
     public List<User> getUsuariosInComunidad(Integer comunidadId) {
         Community community = comunityRepository.findById(comunidadId).orElseThrow(() -> new ResourceNotFoundException("Comunidad no encontrada"));
         return comunidadUserRepository.findUsuariosByComunidad(community);
+
     }
 }

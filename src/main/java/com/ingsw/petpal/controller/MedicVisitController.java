@@ -19,6 +19,15 @@ import java.util.List;
 public class MedicVisitController {
     private final MedicVisitService medicVisitService;
 
+    //@GetMapping("/user/{personaId}")
+    //public ResponseEntity<List<MedicVisitDetailsDTO>> obtenerVisitamedicaPorUsuario(@PathVariable Integer personaId){
+
+    //    List<MedicVisitDetailsDTO> visits = medicVisitService.findMedicVisitByUser(personaId);
+    //    return new ResponseEntity<>(visits, HttpStatus.OK);
+    //}
+
+
+
     @GetMapping
     public ResponseEntity<List<MedicVisitDetailsDTO>> getAllMedicVisits() {
         List<MedicVisitDetailsDTO> visits = medicVisitService.findAll();
@@ -29,6 +38,12 @@ public class MedicVisitController {
     public ResponseEntity<MedicVisitDetailsDTO> getMedicVisitById(@PathVariable Integer id) {
         MedicVisitDetailsDTO visit = medicVisitService.findById(id);
         return new ResponseEntity<>(visit, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{personaId}")
+    public ResponseEntity<List<MedicVisitDetailsDTO>> obtenerVisitamedicaPorUsuario(@PathVariable Integer personaId){
+        List<MedicVisitDetailsDTO> visits = medicVisitService.findMedicVisitByUser(personaId);
+        return new ResponseEntity<>(visits, HttpStatus.OK);
     }
 
     @PostMapping
