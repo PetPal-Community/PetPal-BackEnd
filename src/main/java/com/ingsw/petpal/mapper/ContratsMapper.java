@@ -20,7 +20,14 @@ public class ContratsMapper {
         contratoDetailsDTO.setServicioTipoServicio(contrats.getServicio().getTipo_servicio());
         contratoDetailsDTO.setServicioPrecio(contrats.getServicio().getPrecio());
         contratoDetailsDTO.setCuidadorNombreComplt(contrats.getCuidador().getNombre()+' '+contrats.getCuidador().getApellido());
+        contratoDetailsDTO.setPicRutaUsuario(contrats.getUsuario().getPicRuta());
+        contratoDetailsDTO.setPicRutaCuidador(contrats.getCuidador().getPicRuta());
         contratoDetailsDTO.setUsuarioNombreComplt(contrats.getUsuario().getNombre()+' '+contrats.getUsuario().getApellido());
+        if(contrats.getPago()!=null){
+            contratoDetailsDTO.setPagoContrato(contrats.getPago().getValorPago());
+            contratoDetailsDTO.setPagoEstado(contrats.getPago().getEstadoPago().toString());
+        }
+
        return contratoDetailsDTO;
     }
 

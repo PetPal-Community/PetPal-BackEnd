@@ -19,6 +19,7 @@ public class ServicesMapper {
     public ServicesDetailsDTO toDetailsDTO (Services services){
         ServicesDetailsDTO servicesDetailsDTO = modelMapper.map(services, ServicesDetailsDTO.class);
         servicesDetailsDTO.setCuidadorNombre(services.getCuidador().getNombre());
+        servicesDetailsDTO.setPicRutaCuidador(services.getCuidador().getPicRuta());
         return servicesDetailsDTO;
     }
 

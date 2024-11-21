@@ -83,4 +83,20 @@ public class ServicesServiceImpl implements ServicesService {
         Services servicesfromdb = servicesRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Servicio no encontrado con id " + id));
         servicesRepository.delete(servicesfromdb);
     }
+
+
+    @Transactional
+    @Override
+    public List<ServicesDetailsDTO> getServicesporCuidador(Integer carerId){
+
+        UserGeneral userGCarer = userGeneralRepository.findById(carerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con id: " + carerId));
+        Integer userIDCarer = userGCarer.getCarer().getId();
+
+        Carer carer = carerRepository.findById(userIDCarer).orElseThrow(() -> new ResourceNotFoundException("carer not found with id: " + userIDCarer));
+        List<Services> services = servicesRepository.findByCuidador(carer);
+        return services.stream()
+                .map(servicesMapper::toDetailsDTO)
+                .toList();
+    }
 }

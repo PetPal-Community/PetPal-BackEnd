@@ -18,7 +18,7 @@ import java.nio.file.Files;
 @RequiredArgsConstructor
 @RequestMapping("/media")
 @RestController
-@PreAuthorize("hasAnyRole('ADMIN', 'AUTHOR','CUSTOMER')")  // Permitir solo a CUSTOMER y AUTHOR
+//@PreAuthorize("hasAnyRole('ADMIN','CARER','CUSTOMER')")  // Permitir solo a CUSTOMER y AUTHOR
 public class MediaController {
 
     private final StorageService storageService;

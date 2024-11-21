@@ -18,6 +18,8 @@ public class PagosDetails {
 
     private LocalDateTime fechaPagoCreado;
 
+    private BigDecimal valorServicio;
+
     private BigDecimal valorPago;
 
     private String nombreCuidador;

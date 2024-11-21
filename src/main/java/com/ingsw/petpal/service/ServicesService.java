@@ -13,6 +13,8 @@ public interface ServicesService {
 
     List<ServicesDetailsDTO> getAll();
 
+    List<ServicesDetailsDTO> getServicesporCuidador(Integer carerId);
+
     ServicesDetailsDTO findById(Integer id);
 
     ServicesDetailsDTO create(ServicesDTO service);

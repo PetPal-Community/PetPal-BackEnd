@@ -23,6 +23,11 @@ public class ContratoDetailsDTO {
     private BigDecimal servicioPrecio;
 
     private String usuarioNombreComplt;
+    private String picRutaUsuario;
 
     private String cuidadorNombreComplt;
+    private String picRutaCuidador;
+
+    private BigDecimal pagoContrato;
+    private String pagoEstado;
 }

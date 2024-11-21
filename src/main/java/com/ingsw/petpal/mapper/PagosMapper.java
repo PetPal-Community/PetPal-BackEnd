@@ -23,6 +23,7 @@ public class PagosMapper {
         dto.setNombreCuidador(pagos.getContrato().getCuidador().getNombre() + ' ' + pagos.getContrato().getCuidador().getApellido());
         dto.setNombreUsuario(pagos.getContrato().getUsuario().getNombre() + ' ' + pagos.getContrato().getUsuario().getApellido());
         dto.setNomreServicio(pagos.getContrato().getServicio().getTipo_servicio());
+        dto.setValorServicio(pagos.getContrato().getServicio().getPrecio());
         return dto;
     }
     

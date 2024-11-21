@@ -111,4 +111,13 @@ public class PagosServiceImpl implements PagosService {
         Pagos updatedInvoice = pagosRepository.save(invoice);
         return pagosMapper.toDetailsDTO(updatedInvoice);
     }
+
+    @Override
+    public PagosDetails buscarPorContratoID(Integer contratoID){
+        Contrats contrato = contratsRepository.findById(contratoID)
+                .orElseThrow(() -> new ResourceNotFoundException("Contrato no encontrado con id: " + contratoID));
+
+        Pagos pagoHallado = pagosRepository.findByContrato(contrato);
+        return pagosMapper.toDetailsDTO(pagoHallado);
+    }
 }

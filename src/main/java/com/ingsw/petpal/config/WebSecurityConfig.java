@@ -59,6 +59,7 @@ public class WebSecurityConfig {
                         .requestMatchers(antMatcher("/authenticacion/registrar/customer")).permitAll()
                         .requestMatchers(antMatcher("/authenticacion/registrar/admin")).permitAll()
                         .requestMatchers(antMatcher("/authenticacion/registrar/carer")).permitAll()
+                        .requestMatchers(antMatcher("/media/**")).permitAll()
                         .requestMatchers(antMatcher("/mail/**")).permitAll()
                         //.requestMatchers(antMatcher("/books/recent")).permitAll()
                         .requestMatchers("/api/v2/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/webjars/**").permitAll()

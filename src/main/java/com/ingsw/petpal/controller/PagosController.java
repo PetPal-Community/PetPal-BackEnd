@@ -34,6 +34,12 @@ public class PagosController {
         return new ResponseEntity<>(pagosDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/contrat/{id}")
+    public ResponseEntity<PagosDetails> getPagoPorContratoId(@PathVariable("id") Integer id) {
+        PagosDetails pagosDTO = pagosService.buscarPorContratoID(id);
+        return new ResponseEntity<>(pagosDTO, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<PagosDetails> createPago(@Valid @RequestBody PagosDTO pagosDTO) {
         PagosDetails createdPago = pagosService.create(pagosDTO);

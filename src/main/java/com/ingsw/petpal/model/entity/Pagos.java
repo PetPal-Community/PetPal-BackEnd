@@ -29,7 +29,7 @@ public class Pagos {
 
     private BigDecimal valorPago;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="contratacion_id",referencedColumnName = "id", foreignKey = @ForeignKey(name="fk_contrato_pago"))
     private Contrats contrato;
 }

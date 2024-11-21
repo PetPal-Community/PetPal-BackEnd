@@ -18,4 +18,5 @@ public class ServicesDetailsDTO {
     private BigDecimal precio;
 
     private String cuidadorNombre;
+    private String picRutaCuidador;
 }

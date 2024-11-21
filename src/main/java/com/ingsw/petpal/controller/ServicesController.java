@@ -16,13 +16,21 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/services")
-@PreAuthorize("hasAnyRole('ADMIN','CARER')")
+@PreAuthorize("hasAnyRole('ADMIN','CARER','CUSTOMER')")
 public class ServicesController {
     private final ServicesService servicesService;
+
+
 
     @GetMapping
     public ResponseEntity<List<ServicesDetailsDTO>> getAllServices() {
         List<ServicesDetailsDTO> services = servicesService.getAll();
+        return new ResponseEntity<List<ServicesDetailsDTO>>(services, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<ServicesDetailsDTO>> getServicesByCuidador(@PathVariable("id") Integer id) {
+        List<ServicesDetailsDTO> services = servicesService.getServicesporCuidador(id);
         return new ResponseEntity<List<ServicesDetailsDTO>>(services, HttpStatus.OK);
     }
 

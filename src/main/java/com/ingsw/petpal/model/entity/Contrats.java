@@ -1,10 +1,12 @@
 package com.ingsw.petpal.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
@@ -32,4 +34,7 @@ public class Contrats {
     @ManyToOne
     @JoinColumn(name = "cuidador_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_contrato_cuidador"))
     private Carer cuidador;
+
+    @OneToOne(mappedBy = "contrato",  cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Pagos pago;
 }
